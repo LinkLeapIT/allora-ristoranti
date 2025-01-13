@@ -1,0 +1,30 @@
+@import "./base.css";
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .navBarHover {
+    @apply h-12 px-2 rounded-full bg-transparent flex items-center gap-2 hover:bg-hoverBg duration-300 cursor-pointer;
+  }
+  .bottomNavLi {
+    @apply hover:underline underline-offset-2 cursor-pointer decoration-[1px] duration-200 font-semibold;
+  }
+  .socialLink {
+    @apply bg-slate-100 p-1 inline-flex items-center justify-center rounded-md text-lg hover:bg-green hover:text-white cursor-pointer duration-200;
+  }
+}
+
+/* Global Scroll Behavior */
+html {
+  scroll-behavior: smooth; /* Enables smooth scrolling globally */
+}
+
+/* Utility for Hiding Scrollbars */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* WebKit browsers */
+}
