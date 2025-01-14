@@ -83,14 +83,6 @@ const ProductsData = ({ product }: ItemProps) => {
   return (
     <>
       <Card className="mx-auto">
-        {/* Icons on top */}
-        <div className="w-full h-5 flex items-center justify-between relative top-10 px-1">
-          <Link href={{ pathname: '/product', query: { id: product?.id } }}>
-            <HiViewfinderCircle className="text-lightText text-4xl p-[2px] rounded-full bg-yellow hover:bg-orange hover:text-hoverBg duration-200 cursor-pointer border-2 border-orange" />
-          </Link>
-          <GoHeart className="text-lightText text-4xl p-[2px] rounded-full hover:bg-orange bg-yellow hover:text-hoverBg duration-200 cursor-pointer border-2 border-orange" />
-        </div>
-
         {/* Image & Title */}
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center p-1 w-[260px] h-[260px] bg-gradient-to-t from-yellow to-orange rounded-t-full">
@@ -103,10 +95,14 @@ const ProductsData = ({ product }: ItemProps) => {
             />
           </div>
           <div className="flex flex-col justify-between gap-y-2 bg-gradient-to-t from-orange to-yellow rounded-b-lg min-h-[160px]">
-            <div>
+            <div className='flex items-center justify-between p-2'>
+              <Link href={{ pathname: '/product', query: { id: product?.id } }}>
+                <HiViewfinderCircle className="text-lightText text-4xl p-[2px] rounded-full bg-yellow hover:bg-orange hover:text-hoverBg duration-200 cursor-pointer border-2 border-orange" />
+              </Link>
               <h3 className="text-center text-2xl font-extrabold bg-gradient-to-r from-lightText to-orange bg-clip-text text-transparent p-1">
                 {product.title}
               </h3>
+              <GoHeart className="text-lightText text-4xl p-[2px] rounded-full hover:bg-orange bg-yellow hover:text-hoverBg duration-200 cursor-pointer border-2 border-orange" />
             </div>
 
             <p className="line-clamp-3 text-center max-w-[240px] mx-auto">

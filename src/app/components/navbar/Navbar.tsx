@@ -2,56 +2,31 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useAuthContext } from "@/app/contexts/AuthContext";
-import { alloraLogo } from "@/../public/assets/images/index";
-import { GoHeart } from "react-icons/go";
-import { AiOutlineUser } from "react-icons/ai";
+import alloraLogo from "@/../public/assets/images/logo.png";
 import { MdMenuBook } from "react-icons/md";
-import { BsCart2, BsBookmarks } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
+import {  BsBookmarks } from "react-icons/bs";
+import { RiShoppingCartLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 import { Products, StateProps } from "../../../../type";
 import Link from "next/link";
-import { addUser, deleteUser } from "@/redux/shoppingSlice";
-import { div } from "framer-motion/client";
-
-const LogIn = () => {
-    const { login, currentUser } = useAuthContext();
-    return (
-        !currentUser && (
-        <button type="button" className="btn btn-warning" onClick={login}>
-            Login
-        </button>
-        )
-    );
-};
-  
-const LogOut = () => {
-    const { logout, currentUser } = useAuthContext();
-    return (
-    !!currentUser && (
-        <button type="button" className="btn btn-danger" onClick={logout}>
-        Logout
-        </button>
-    )
-    );
-};
+import { AnimatePresence, motion } from "framer-motion";
+import AuthButtons from "@/components/auth-button";
 
 const Navbar = () => {
-    const dispatch = useDispatch();
     const { currentUser } = useAuthContext();
     const { productData, orderData } = useSelector((state: StateProps) => state.shopping);
-    useEffect(() => {
-        if(currentUser) {
-            dispatch(
-                addUser({
-                    name: currentUser?.displayName,
-                    email: currentUser?.email,
-                    image: currentUser?.photoURL,
-                })
-            );
-        }else {
-            dispatch(deleteUser());
-        }
-    },[currentUser, dispatch]);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const navItems = useMemo(
+        () => [
+          { href: "/", label: "Home" },
+          { href: "/chi-siamo", label: "Chi Siamo" },
+          { href: "/servizi", label: "Servizi" },
+          { href: "/contatti", label: "Contatti" },
+          { href: "/chiama-ora", label: "Chiama-Ora!" },
+        ],
+        []
+    );
 
     const calculateTotalPrice = (product: Products) => {
         let totalPrice = 0;
@@ -78,90 +53,118 @@ const Navbar = () => {
         setTotalAmt(amt);
     }, [productData]);
 
-    const username = useMemo(() => {
-        return currentUser?.displayName || "Profile";
-    }, [currentUser]);
-    
-    const avatar = useMemo(() => {
-        return !!currentUser ? (
-            <Image
-            src={currentUser?.photoURL}
-            alt={currentUser?.displayName}
-            width="34"
-            height="34"
-            className="rounded-full"
-            />
-        ) : (
-                <AiOutlineUser 
-                className="text-lg"
-                aria-hidden="true"
-            />
-        );
-    }, [currentUser]);
-
     return (
-        <div className="w-full bg-yellow text-orange sticky top-0 z-50">
-            <div className="container mx-auto w-ful">
-                <div className="w-full h-full">
-                    <div className="max-w-container mx-auto h-20 px-1 flex items-center justify-between gap-2">
-                        {/** Logo start here */}
-                        <div className="navBarHover">
-                            <Image className="w-44" src={alloraLogo} alt="logo"/>
-                        </div>
-                        {/** Logo End here */}
-
-                        <div className="flex">
-                            {/** orderData start here */}
-                            {
-                                orderData?.length > 0 && currentUser && (
-                                    <Link className="text-2xl" href={'/order'}>
-                                        <BsBookmarks className="text-2xl" />
-                                        <p className="">Orders</p>
-                                    </Link>
-                                )
-                            }
-
-                            {/** Account start here */}
-                            <div className="navBarHover">
-                                {avatar}
-                                <div>
-                                <div className="flex justify-center">
-                                    <LogIn />
-                                    <LogOut />
-                                </div>
-                                    <h2 className="text-base font-semibold -mt-1">{username}</h2>
-                                </div>
-
-                            </div>
-                            {/** Account End here */}
-
-                            {/** Services start here */}
-                            <Link href="/menu" className="navBarHover">
-                                <MdMenuBook className="text-2xl"/>
-                            </Link>
-                            {/** Services End here */}
-
-                            {/** I Liked start here */}
-                            <div className="navBarHover">
-                                <GoHeart className="text-2xl"/>
-                            </div>
-                            {/** I Liked End here */}
-
-                            {/** Cart start here */}
-                            <Link href={"/cart"}>
-                                <div className="flex flex-col justify-center items-center gap-2 h-12 pr-2 rounded-full bg-transparent hover:bg-hoverBg duration-300 relative">
-                                    <BsCart2 className="text-2xl"/>
-                                    <p className="text-[10px] -mt-2">${totalAmt.toFixed(2)}</p>
-                                    <span className="absolute w-4 h-4 bg-orange text-black top-0 right-0 rounded-full flex justify-center items-center text-xs">{productData ? productData.length : 0}</span>
-                                </div>
-                            </Link>
-                            {/** Cart End here */}
-
-                        </div>
+        <header className="sticky inset-x-0 top-0 z-50 w-full bg-lightBg">
+            <div className="max-w-[1400px] mx-auto">
+                <nav className="flex items-center justify-between p-4 uppercase" aria-label="Global">
+                    <div className="flex items-center flex-shrink-0">
+                    <Link href="/" className="-m-1.5 p-1.5">
+                        <Image
+                        src={alloraLogo}
+                        alt="Logo"
+                        width={96}
+                        height={85}
+                        className="w-[48px] md:w-[72px] xl:w-[96px] h-auto"
+                        priority
+                        />
+                    </Link>
                     </div>
-                </div>
+
+                    <motion.div
+                    className="hidden lg:flex flex-grow justify-center lg:gap-x-12"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8 }}
+                    >
+                    {navItems.map(({ href, label }) => (
+                        <Link
+                        key={href}
+                        href={href}
+                        className="tracking-widest leading-6 text-text text-[12px] xl:text-[16px] font-extrabold hover:scale-110 hover:text-lightText transition-transform bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent"
+                        >
+                        {label}
+                        </Link>
+                    ))}
+                    </motion.div>
+
+                    <div className="flex flex-1 justify-end items-center gap-4">
+                    <div className="relative">
+                        {/** orderData start here */}
+                        {
+                            orderData?.length > 0 && currentUser && (
+                                <Link className="text-2xl" href={'/order'}>
+                                    <BsBookmarks className="text-2xl" />
+                                    <p className="">Orders</p>
+                                </Link>
+                            )
+                        }
+                    </div>
+                    {/** Services start here */}
+                    <Link href="/menu">
+                        <MdMenuBook className="text-3xl text-lightText hover:text-hoverBg duration-300 hover:scale-110 transition-transform"/>
+                    </Link>
+                    {/** Services End here */}
+
+                    {/** Cart start here */}
+                    <Link href={"/cart"}>
+                        <div className="flex flex-col justify-center items-center gap-2 h-12 bg-transparent relative ">
+                            <RiShoppingCartLine className="text-3xl text-lightText hover:text-hoverBg duration-300 hover:scale-110 transition-transform"/>
+                            <p className="text-[10px] font-extrabold text-lightText -mt-2">${totalAmt.toFixed(2)}</p>
+                            <span className="absolute w-4 h-4 bg-lightText text-lightBg top-0 right-0 rounded-full flex justify-center items-center text-xs">{productData ? productData.length : 0}</span>
+                        </div>
+                    </Link>
+                    {/** Cart End here */}
+                    <AuthButtons />
+                    </div>
+
+                    <button
+                    type="button"
+                    className="inline-flex items-center text-lightText hover:text-hoverBg duration-300 justify-center p-2 lg:hidden"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    >
+                    <svg
+                        className={`h-9 w-9 transition-transform ${mobileMenuOpen ? "rotate-180" : ""}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M3 12h18m-18 6h18" />
+                    </svg>
+                    </button>
+                </nav>
+
+                <AnimatePresence>
+                    {mobileMenuOpen && (
+                    <motion.div
+                        className="fixed inset-0 z-50 bg-gradient-to-tr from-darkBg via-lightBg to-darkBg p-6 lg:hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <div className="flex flex-col items-center justify-center">
+                        <button
+                            className="self-end mb-4 text-2xl text-darkText hover:text-lightText"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            ✖
+                        </button>
+                        {navItems.map(({ href, label }) => (
+                            <Link
+                            key={href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            href={href}
+                            className="tracking-widest leading-6 bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent text-3xl mb-9 hover:scale-110 hover:text-lightText transition-transform font-extrabold p-1"
+                            >
+                            {label}
+                            </Link>
+                        ))}
+                        </div>
+                    </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
-        </div>
+        </header>
     );
 };
 

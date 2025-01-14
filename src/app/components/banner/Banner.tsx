@@ -43,7 +43,7 @@ const Banner: React.FC = () => {
   }, [auto, autoScroll]);
 
   return (
-    <div className="relative max-w-[1400px] mx-auto h-[75vh] overflow-hidden flex items-center justify-center">
+    <div className="relative w-screen mx-auto h-[40vh] md:h-[90vh] overflow-hidden flex items-center justify-center">
       {/* Previous Arrow */}
       <div
         onClick={prevSlide}

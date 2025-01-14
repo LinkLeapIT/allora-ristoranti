@@ -1,46 +1,42 @@
-import { setDoc, doc, serverTimestamp, collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase.config';
+import { setDoc, doc, serverTimestamp, collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/firebase.config";
 
 const Firestore = {
-    readDocs: (collection_name) => {
-        let docs = [];
-        const ref = collection(db, collection_name);
-        return new Promise(async resolve => {
-            try {
-                const snapshots = await getDocs(ref);
-                snapshots.forEach(doc => {
-                    const d = { ...doc.data(), id: doc.id };
-                    docs.push(d);
-                });
-                resolve(docs);
-            } catch (e) {
-                console.error('Error reading documents:', e);
-                resolve([]);
-            }
+  readDocs: (collection_name) => {
+    const ref = collection(db, collection_name);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const snapshots = await getDocs(ref);
+        const docsArray = [];
+        snapshots.forEach((docSnap) => {
+          docsArray.push({ ...docSnap.data(), id: docSnap.id });
         });
-    },
-    writeDoc: (inputs, collection_name) => {
-        return new Promise(async resolve => {
-            const randomIndex = Math.floor(Math.random() * 1000000000).toString();
-            try {
-                const docRef = doc(db, collection_name, randomIndex);
-                await setDoc(docRef, {
-                    title: inputs.title,
-                    path: inputs.path,
-                    description: inputs.description,
-                    withoutOptions: inputs.withoutOptions,
-                    extraIngredients: inputs.extraIngredients,
-                    sizes: inputs.sizes,
-                    quantity: inputs.quantity,
-                    createdAt: serverTimestamp()
-                });
-                resolve('New doc successfully inserted');
-            } catch (e) {
-                console.error('Error writing document:', e);
-                resolve('Error writing document');
-            }
+        resolve(docsArray);
+      } catch (e) {
+        console.error("Error reading documents:", e);
+        reject(e);
+      }
+    });
+  },
+
+  writeDoc: (inputs, collection_name) => {
+    return new Promise(async (resolve, reject) => {
+      // You can generate a random ID or rely on Firestore's auto-generated ID.
+      // We'll do a random integer for demonstration:
+      const randomIndex = Math.floor(Math.random() * 1_000_000_000).toString();
+      try {
+        const docRef = doc(db, collection_name, randomIndex);
+        await setDoc(docRef, {
+          ...inputs,
+          createdAt: serverTimestamp(),
         });
-    }
-}
+        resolve(`New doc successfully inserted with id ${randomIndex}`);
+      } catch (e) {
+        console.error("Error writing document:", e);
+        reject(e);
+      }
+    });
+  },
+};
 
 export default Firestore;
