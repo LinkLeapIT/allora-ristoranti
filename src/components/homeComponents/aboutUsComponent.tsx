@@ -82,7 +82,7 @@ const AboutUsComponent = () => {
           <h1 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent">SU DI NOI</h1>
           <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent">Allora Ristorante</h2>
           <p className="text-xl md:text-2xl max-w-lg mx-auto">
-            La Siria è una terra che da sempre ha influenzato tantissimo la cultura di tutta l'area Mediterranea e ha saputo fare suoi profumi e sapori unici che provengono da terre lontane, facendoli arrivare in tanti porti con i suoi marinai e le grandi navi che venivano a caricare le spezie lungo le coste.
+          La Siria è una terra che da sempre ha influenzato tantissimo la cultura di tutta l&apos;area Mediterranea e ha saputo fare suoi profumi e sapori unici che provengono da terre lontane, facendoli arrivare in tanti porti con i suoi marinai e le grandi navi che venivano a caricare le spezie lungo le coste.
           </p>
           <Link href="/">SCOPRI DI PIÙ</Link>
         </motion.div>

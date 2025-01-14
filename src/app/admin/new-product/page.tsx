@@ -2,6 +2,7 @@
 
 import React, { useState, ChangeEvent } from "react";
 import { createProduct } from "@/app/actions/createProduct";
+import Image from "next/image";
 
 interface ExtraIngredient {
   ingredient: string;
@@ -285,7 +286,13 @@ export default function NewProductPage() {
             <label className="block font-semibold mb-1">
               Image Preview
             </label>
-            <img src={state.inputs.path} alt="Product" className="max-w-full" />
+            <Image
+              src={state.inputs.path}
+              alt="Product"
+              width={250}
+              height={250}
+              className="max-w-full"
+            />
           </div>
         )}
 
