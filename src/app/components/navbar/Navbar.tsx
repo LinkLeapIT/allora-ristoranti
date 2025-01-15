@@ -20,7 +20,7 @@ const Navbar = () => {
     const navItems = useMemo(
         () => [
           { href: "/", label: "Home" },
-          { href: "/chi-siamo", label: "Chi Siamo" },
+          { href: "/pages/who-we-are", label: "Chi Siamo" },
           { href: "/servizi", label: "Servizi" },
           { href: "/contatti", label: "Contatti" },
           { href: "/chiama-ora", label: "Chiama-Ora!" },

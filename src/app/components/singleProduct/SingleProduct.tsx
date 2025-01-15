@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import {  Form, Row, Col, Button } from "react-bootstrap";
 import { IoMdCart } from 'react-icons/io';
 import { MdFavoriteBorder } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
