@@ -50,7 +50,7 @@ const PaymentForm = () => {
     // ============================  Stripe payment end here ==========================
 
     return (
-        <div className="w-full bg-white p-4">
+        <div className="w-full bg-white">
             <h2>Cart Totals</h2>
             <div className="border-b-[1px] border-b-slate-300 py-2">
                 <div className="max-w-lg flex items-center justify-between">
@@ -59,10 +59,10 @@ const PaymentForm = () => {
                 </div>
             </div>
             {userInfo ? (
-                <Button onClick={handleCheckout} className="bg-black text-slate-100 mt-4 py-3 px-6 hover:bg-orange cursor-pointer duration-200">Proceed to checkout</Button>
+                <Button onClick={handleCheckout} className="bg-darkText rounded-lg text-slate-100 mt-4 py-3 px-6 hover:bg-[#1e1e1e] cursor-pointer duration-300">Proceed to checkout</Button>
             ) : (
                 <div>
-                    <Button className="bg-black text-slate-100 mt-4 py-3 px-6 hover:bg-orange cursor-not-allowed duration-200">Proceed to checkout</Button>
+                    <Button className="bg-darkText rounded-lg text-slate-100 mt-4 py-3 px-6 cursor-not-allowed">Proceed to checkout</Button>
                     <p className="text-base mt-1 text-red-500 font-semibold animate-bounce">Please login to continue</p>
                 </div>
             )}

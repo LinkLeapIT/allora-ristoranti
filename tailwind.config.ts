@@ -32,14 +32,12 @@ const config: Config = {
   			'2xl': '1400px'
   		},
   		colors: {
-  			yellow: '#967d48',
-  			green: '#acacac',
-  			orange: '#ead9c7',
   			lightText: '#967d48',
-  			darkText: '#1e1e1e',
-  			darkBg: '#3a3a3a',
-  			lightBg: '#f6f6f6',
+  			darkText: '#3a3a3a',
+  			darkBg: '#f6f6f6',
+  			lightBg: '#ffffff',
   			hoverBg: '#acacac',
+			link: '#eadbc7',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

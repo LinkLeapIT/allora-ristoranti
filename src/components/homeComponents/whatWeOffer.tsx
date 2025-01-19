@@ -79,7 +79,7 @@ export default function WhatWeOffer() {
               libanese sono la base e il punto di partenza per tantissime ...
             </p>
             <Link
-              href="/"
+              href="/pages/ristorante"
               className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
             >
               Scopri di più
@@ -106,7 +106,7 @@ export default function WhatWeOffer() {
               si riferisce proprio alla tradizione siriana e libanese...
             </p>
             <Link
-              href="/"
+              href="/pages/cuisine"
               className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
             >
               Scopri di più
@@ -133,7 +133,7 @@ export default function WhatWeOffer() {
               casa propria, senza doversi preoccupare di prenotare un posto...
             </p>
             <Link
-              href="/"
+              href="/pages/delivery"
               className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
             >
               Scopri di più
@@ -161,7 +161,7 @@ export default function WhatWeOffer() {
               serate...
             </p>
             <Link
-              href="/"
+              href="/pages/evenings"
               className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
             >
               Scopri di più

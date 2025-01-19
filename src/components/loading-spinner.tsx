@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { FaSpinner } from 'react-icons/fa'; // Import spinner icon from react-icons
+import { ImSpinner10 } from "react-icons/im";
 
 interface LoadingSpinnerProps {
   text?: string;       // Optional prop for custom loading text
@@ -31,17 +31,14 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return (
     <div
       className="
-        fixed inset-0 z-50 
-        flex flex-col items-center justify-center 
-        bg-green bg-opacity-90  /* Semi-transparent white overlay */
-        transition-opacity duration-300
+        fixed inset-0 z-50 flex flex-col items-center justify-center bg-darkBg bg-opacity-90 transition-opacity duration-300
       "
     >
       {/* Icon for loading animation with dynamic size */}
-      <FaSpinner
+      <ImSpinner10
         className={`
           ${spinnerSize[size]} 
-          text-button  /* Tailwind color class (customize as needed) */
+          text-lightText
           animate-spin 
           mb-3
         `}
@@ -52,9 +49,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         <p
           className={`
             ${textSize[size]} 
-            font-semibold 
-            text-text   /* Tailwind color class (customize as needed) */
-            animate-pulse
+            font-semibold text-lightText animate-pulse
           `}
         >
           {text}

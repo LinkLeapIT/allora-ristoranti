@@ -16,14 +16,18 @@ const Navbar = () => {
     const { currentUser } = useAuthContext();
     const { productData, orderData } = useSelector((state: StateProps) => state.shopping);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const whatsappLink = "https://wa.me/393497068208?text=Salve%20Allora!";
 
     const navItems = useMemo(
         () => [
-          { href: "/", label: "Home" },
-          { href: "/pages/who-we-are", label: "Chi Siamo" },
-          { href: "/servizi", label: "Servizi" },
-          { href: "/contatti", label: "Contatti" },
-          { href: "/chiama-ora", label: "Chiama-Ora!" },
+            { href: "/", label: "Home" },
+            { href: "/pages/who-we-are", label: "Chi Siamo" },
+            { href: "/pages/services", label: "Servizi" },
+            { href: "/pages/contact_us", label: "Contatti" },
+            {
+              href: "https://wa.me/393497068208?text=Salve%20Allora!",
+              label: "Chiama-Ora!",
+            },
         ],
         []
     );
@@ -54,7 +58,7 @@ const Navbar = () => {
     }, [productData]);
 
     return (
-        <header className="sticky inset-x-0 top-0 z-50 w-full bg-lightBg">
+        <header className="sticky inset-x-0 top-0 z-50 w-full bg-darkBg">
             <div className="max-w-[1400px] mx-auto">
                 <nav className="flex items-center justify-between p-4 uppercase" aria-label="Global">
                     <div className="flex items-center flex-shrink-0">
@@ -71,20 +75,69 @@ const Navbar = () => {
                     </div>
 
                     <motion.div
-                    className="hidden lg:flex flex-grow justify-center lg:gap-x-12"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8 }}
-                    >
-                    {navItems.map(({ href, label }) => (
-                        <Link
-                        key={href}
-                        href={href}
-                        className="tracking-widest leading-6 text-text text-[12px] xl:text-[16px] font-extrabold hover:scale-110 hover:text-lightText transition-transform bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent"
+                        className="hidden lg:flex flex-grow justify-center lg:gap-x-12"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
                         >
-                        {label}
-                        </Link>
-                    ))}
+                        {navItems.map(({ href, label }) => {
+                            // 1) Decide if link is external. For example:
+                            const isExternal = href.startsWith("http") || href.startsWith("//");
+                            // 2) Render <a> for external, <Link> for internal
+                            if (isExternal) {
+                            return (
+                                <a
+                                key={href}
+                                href={href}
+                                target="_blank" // open in new tab
+                                rel="noopener noreferrer" // security & performance
+                                className="
+                                    tracking-widest 
+                                    leading-6 
+                                    text-text 
+                                    text-[12px] 
+                                    xl:text-[16px] 
+                                    font-extrabold 
+                                    hover:scale-110 
+                                    hover:text-lightText 
+                                    transition-transform 
+                                    bg-gradient-to-r 
+                                    from-darkText 
+                                    to-lightText 
+                                    bg-clip-text 
+                                    text-transparent
+                                "
+                                >
+                                {label}
+                                </a>
+                            );
+                            } else {
+                            return (
+                                <Link
+                                key={href}
+                                href={href}
+                                className="
+                                    tracking-widest 
+                                    leading-6 
+                                    text-text 
+                                    text-[12px] 
+                                    xl:text-[16px] 
+                                    font-extrabold 
+                                    hover:scale-110 
+                                    hover:text-lightText 
+                                    transition-transform 
+                                    bg-gradient-to-r 
+                                    from-darkText 
+                                    to-lightText 
+                                    bg-clip-text 
+                                    text-transparent
+                                "
+                                >
+                                {label}
+                                </Link>
+                            );
+                            }
+                        })}
                     </motion.div>
 
                     <div className="flex flex-1 justify-end items-center gap-4">
@@ -143,22 +196,70 @@ const Navbar = () => {
                         exit={{ opacity: 0 }}
                     >
                         <div className="flex flex-col items-center justify-center">
-                        <button
-                            className="self-end mb-4 text-2xl text-darkText hover:text-lightText"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            ✖
-                        </button>
-                        {navItems.map(({ href, label }) => (
-                            <Link
-                            key={href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            href={href}
-                            className="tracking-widest leading-6 bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent text-3xl mb-9 hover:scale-110 hover:text-lightText transition-transform font-extrabold p-1"
+                            <button
+                                className="self-end mb-4 text-2xl text-darkText hover:text-lightText"
+                                onClick={() => setMobileMenuOpen(false)}
                             >
-                            {label}
-                            </Link>
-                        ))}
+                                ✖
+                            </button>
+                            {navItems.map(({ href, label }) => {
+                                // 1) Decide if link is external. For example:
+                                const isExternal = href.startsWith("http") || href.startsWith("//");
+                                // 2) Render <a> for external, <Link> for internal
+                                if (isExternal) {
+                                return (
+                                    <a
+                                    key={href}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    href={href}
+                                    target="_blank" // open in new tab
+                                    rel="noopener noreferrer" // security & performance
+                                    className="
+                                        tracking-widest 
+                                        leading-6  
+                                        text-3xl 
+                                        font-extrabold 
+                                        hover:scale-110 
+                                        hover:text-lightText 
+                                        transition-transform 
+                                        bg-gradient-to-r 
+                                        from-darkText 
+                                        to-lightText 
+                                        bg-clip-text 
+                                        text-transparent
+                                        p-4
+                                    "
+                                    >
+                                    {label}
+                                    </a>
+                                );
+                                } else {
+                                return (
+                                    <Link
+                                    key={href}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    href={href}
+                                    className="
+                                        tracking-widest 
+                                        leading-6 
+                                        text-3xl
+                                        font-extrabold 
+                                        hover:scale-110 
+                                        hover:text-lightText 
+                                        transition-transform 
+                                        bg-gradient-to-r 
+                                        from-darkText 
+                                        to-lightText 
+                                        bg-clip-text 
+                                        text-transparent
+                                        p-4
+                                    "
+                                    >
+                                    {label}
+                                    </Link>
+                                );
+                                }
+                            })}
                         </div>
                     </motion.div>
                     )}

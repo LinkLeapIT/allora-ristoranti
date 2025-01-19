@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import { resetCart } from '@/redux/shoppingSlice';
 import PaymentForm from '../components/paymentForm/PaymentForm';
 import Link from 'next/link';
+import { FaMartiniGlassEmpty } from "react-icons/fa6";
 
 const CartPage = () => {
   const { productData } = useSelector((state: StateProps) => state.shopping);
@@ -17,13 +18,13 @@ const CartPage = () => {
       {
         productData.length > 0 ?     
         <Container>
-          <h2 className='text-2xl font-semibold mb-2'>Cart</h2>
+          <h2 className='text-2xl font-semibold mb-2'>Your Cart</h2>
           <div className='flex flex-col gap-5'>
             < CartItem />
             <div className='flex items-center justify-end'>
               <Button
                 onClick={()=> dispatch(resetCart())}
-                className='bg-red-500 text-base font-semibold text-slate-100 py-2 px-6 hover:bg-red-700 hover:text-white duration-200'>
+                className='bg-red-500 text-base font-semibold text-slate-100 py-2 px-6 hover:bg-red-700 hover:text-white duration-300 rounded-lg'>
                 reset cart
               </Button>
             </div>
@@ -31,10 +32,13 @@ const CartPage = () => {
           </div>
         </Container> 
         : 
-        <div className='flex flex-col gap-y-6 items-center justify-center bg-white h-96 px-4'>
-          <p className='border-[1px] border-orange w-full p-2 text-center'>Your product cart is currently empty</p>
-          <Link href={'/'}>
-            <Button className='bg-green text-white py-2 px-6 rounded-md hover:bg-orange duration-200'>Return to shop</Button>
+        <div className="flex flex-col items-center justify-between gap-y-8 text-center">
+          <FaMartiniGlassEmpty className="text-lightText text-9xl" />
+          <p className="text-2xl">Your cart is empty.</p>
+          <Link href="/menu">
+            <Button className="bg-lightText hover:bg-link hover:text-darkText duration-300 transition-colors rounded-lg text-white px-4 py-2">
+              Continue Shopping
+            </Button>
           </Link>
         </div>
       }

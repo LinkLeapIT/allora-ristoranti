@@ -2,8 +2,8 @@
 import { getSingleProduct } from '@/helpers';
 import React, { useEffect, useState } from 'react';
 import { Products } from '../../../type';
-import Container from '../components/navbar/Container';
 import SingleProduct from '../components/singleProduct/SingleProduct';
+import LoadingSpinner from '@/components/loading-spinner';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined },
@@ -38,7 +38,7 @@ const ProductPage: React.FC<Props> = ({ searchParams }) => {
   }, [searchParams]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className='h-screen'><LoadingSpinner /></div>;
   }
 
   if (error) {
@@ -46,12 +46,12 @@ const ProductPage: React.FC<Props> = ({ searchParams }) => {
   }
 
   return (
-    <Container>
+    <div className='w-full'>
       {product && <SingleProduct product={product} />}
       <div>
         Most Popular products
       </div>
-    </Container>
+    </div>
   );
 }
 

@@ -3,32 +3,23 @@ import Image from "next/image";
 import allora_window from "../../../public/assets/images/allora-window.jpg";
 import React, { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
-import AnimatedButton from "../AnimatedButton";
 import { animate, motion, useMotionTemplate, useMotionValue, ValueAnimationTransition } from "framer-motion";
 import { memo } from "react";
 import Link from "next/link";
 
-const scrollToGiveaway = () => {
-  const section = document.getElementById("onetimePackges");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+const textVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } },
+};
 
-  const textVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } },
-  };
+const imageVariants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } },
+};
 
 const AboutUsComponent = () => {
   const xPercentage = useMotionValue(0);
   const yPercentage = useMotionValue(0);
-  const maskImage = useMotionTemplate`radial-gradient(80px 80px at ${xPercentage}% ${yPercentage}%, black, transparent)`;
 
   const { ref: textRef, inView: textInView } = useInView({
     triggerOnce: true,
@@ -70,7 +61,7 @@ const AboutUsComponent = () => {
 
   return (
     <section className="w-full relative bg-gradient-to-tr from-lightBg via-hoverBg to-lightBg">
-      <div className=" max-w-contentContainer mx-auto flex flex-col gap-5 lg:grid lg:grid-cols-2 text-text text-center py-4 md:py-8 px-4">
+      <div className=" max-w-contentContainer mx-auto flex flex-col gap-5 lg:grid lg:grid-cols-2 text-center py-4 md:py-8 px-4">
         {/* Text Section */}
         <motion.div
           ref={textRef}
@@ -84,7 +75,7 @@ const AboutUsComponent = () => {
           <p className="text-xl md:text-2xl max-w-lg mx-auto">
           La Siria è una terra che da sempre ha influenzato tantissimo la cultura di tutta l&apos;area Mediterranea e ha saputo fare suoi profumi e sapori unici che provengono da terre lontane, facendoli arrivare in tanti porti con i suoi marinai e le grandi navi che venivano a caricare le spezie lungo le coste.
           </p>
-          <Link href="/">SCOPRI DI PIÙ</Link>
+          <Link href="/pages/who-we-are" className="hover:text-hoverBg text-lightText duration-300">SCOPRI DI PIÙ</Link>
         </motion.div>
 
         {/* Image Section */}

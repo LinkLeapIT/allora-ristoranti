@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "../navbar/Container";
 
+// Basic fade-up variants
 const fadeVariants = {
   hidden: { opacity: 0, y: 10 },
   show: {
@@ -18,9 +19,12 @@ const fadeVariants = {
 };
 
 export default function Footer() {
+
+  const whatsappLink = "https://wa.me/393497068208?text=Salve%20Allora!";
+
   return (
     <motion.div
-      className="mx-10"
+      className=" bg-darkBg"
       // Animate the entire footer as it comes into view
       initial="hidden"
       whileInView="show"
@@ -46,12 +50,33 @@ export default function Footer() {
             alt="Allora Ristorante Logo"
             width={176}
             height={80}
-            priority={false} // or true if you want it optimized eagerly
+            priority={false}
           />
-          <p className="text-lg md:text-xl">alloraristorante2021@gmail.com</p>
-          <p className="text-lg md:text-xl">+39 349 706 8208</p>
+          {/* Make the phone number clickable for WhatsApp */}
+          <p className="text-lg md:text-xl">
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              alloraristorante2021@gmail.com
+            </a>
+          </p>
+
+          <p className="text-lg md:text-xl">
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              +39 349 706 8208
+            </a>
+          </p>
 
           <div className="flex items-center gap-x-4">
+            {/* Facebook */}
             <a
               href="https://www.facebook.com/safwan.ali.altawil/about_overview"
               target="_blank"
@@ -60,6 +85,7 @@ export default function Footer() {
               <BsFacebook className="text-2xl text-lightText transition-transform duration-300 hover:scale-110 hover:text-hoverBg md:text-3xl" />
             </a>
 
+            {/* Instagram */}
             <a
               href="https://www.facebook.com/safwan.ali.altawil/about_overview"
               target="_blank"
@@ -68,8 +94,9 @@ export default function Footer() {
               <BsInstagram className="text-2xl text-lightText transition-transform duration-300 hover:scale-110 hover:text-hoverBg md:text-3xl" />
             </a>
 
+            {/* WhatsApp */}
             <a
-              href="https://www.facebook.com/safwan.ali.altawil/about_overview"
+              href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
             >

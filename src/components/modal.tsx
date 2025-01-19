@@ -31,7 +31,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
              * MODAL CONTENT 
              * Gradient background, scrollable area
              */
-            className="bg-gradient-to-tr from-green via-yellow to-green 
+            className="bg-darkBg 
                        rounded-lg shadow-lg p-6 w-full max-w-md 
                        overflow-auto max-h-[90vh] relative 
                        scrollbar-hide scroll-smooth"
@@ -42,9 +42,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             transition={{ duration: 0.3 }}
           >
             {title && (
-              <h2 className="text-2xl bg-gradient-to-r from-lightText to-yellow 
-                             bg-clip-text text-transparent font-extrabold 
-                             mb-4 p-1"
+              <h2 className="text-2xl font-extrabold mb-4 p-1"
               >
                 {title}
               </h2>

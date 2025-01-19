@@ -1,55 +1,67 @@
 "use client";
 
 import React, { useState } from "react";
-import Product from "../components/products/Products";
 import { CiSearch } from "react-icons/ci";
+import Product from "../components/products/Products";
+import { TbLayoutSidebarLeftExpandFilled, TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
+
+// Example data
+const categories = ["Pasta", "Pizza", "Salad", "Desserts"];
+const sortOptions = [
+  { label: "Price: Low to High", value: "price-asc" },
+  { label: "Price: High to Low", value: "price-desc" },
+  { label: "Rating: High to Low", value: "rating-desc" },
+  { label: "Rating: Low to High", value: "rating-asc" },
+];
 
 export default function Page() {
+  // Filters & Search
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Example categories
-  const categories = ["Pasta", "Pizza", "Salad", "Desserts"];
+  // Sidebar open state
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Example sort options
-  const sortOptions = [
-    { label: "Price: Low to High", value: "price-asc" },
-    { label: "Price: High to Low", value: "price-desc" },
-    { label: "Rating: High to Low", value: "rating-desc" },
-    { label: "Rating: Low to High", value: "rating-asc" },
-  ];
+  // Handlers
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchTerm(e.target.value);
 
-  // Event handlers
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => setSearchTerm(e.target.value);
-  const handleCategorySelect = (e: React.ChangeEvent<HTMLSelectElement>): void => setCategoryFilter(e.target.value);
-  const handleSortSelect = (e: React.ChangeEvent<HTMLSelectElement>): void => setSortBy(e.target.value);
+  const handleCategorySelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setCategoryFilter(e.target.value);
+
+  const handleSortSelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setSortBy(e.target.value);
+
   const handleViewAllProducts = () => {
     setSearchTerm("");
     setCategoryFilter("");
     setSortBy("");
   };
 
-  // Toggle mobile menu
-  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
-
-  // Common controls (used in both mobile dropdown & desktop grid)
+  // Renders filter controls
   const renderControls = () => (
-    <>
+    <div className="flex flex-col gap-4 p-4">
+      {/* close button  */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="p-2 border border-lightText rounded-lg bg-white hover:bg-darkBg transition-colors hover:text-darkText duration-300 fixed top-4 right-4 text-lightText"
+      >
+        <TbLayoutSidebarLeftCollapseFilled />
+      </button>
       {/* View All Products */}
       <button
         onClick={handleViewAllProducts}
-        className="bg-yellow text-lightText hover:bg-orange hover:text-white border-2 border-orange rounded-lg transition-colors duration-200 shadow-sm"
+        className="hover:bg-darkBg border border-lightText rounded-lg transition-colors duration-300 py-2 px-4 bg-white"
       >
-        View all products
+        View All Products
       </button>
 
       {/* Filter by Category */}
       <select
         value={categoryFilter}
         onChange={handleCategorySelect}
-        className="bg-yellow text-lightText hover:bg-orange hover:text-white border-2 border-orange py-2 px-4 rounded-md hover:bg-orange-600 transition-colors duration-200 cursor-pointer shadow-sm"
+        className="border border-lightText rounded-lg py-2 px-2 focus:outline-none focus:ring-1 focus:ring-lightText"
       >
         <option value="">Filter by category</option>
         {categories.map((cat) => (
@@ -63,7 +75,7 @@ export default function Page() {
       <select
         value={sortBy}
         onChange={handleSortSelect}
-        className="bg-yellow text-lightText hover:bg-orange hover:text-white border-2 border-orange py-2 px-4 rounded-md transition-colors duration-200 cursor-pointer shadow-sm"
+        className="border border-lightText rounded-md py-2 px-2 focus:outline-none focus:ring-1 focus:ring-lightText"
       >
         <option value="">Sort by</option>
         {sortOptions.map((option) => (
@@ -74,60 +86,93 @@ export default function Page() {
       </select>
 
       {/* Search Bar */}
-      <div className="relative flex-1 w-full md:w-auto">
+      <div className="relative">
         <input
-          className="w-full h-10 pl-4 pr-10 rounded-lg text-base bg-yellow text-lightText hover:bg-orange hover:text-white border-2 border-orange placeholder-lightText focus:outline-none focus:ring-2 focus:ring-orange transition-all duration-200 shadow-sm"
+          className="w-full h-9 pl-4 rounded-lg border border-lightText focus:outline-none focus:ring-1 focus:ring-lightText transition-all duration-300"
           type="text"
           placeholder="Search here..."
           value={searchTerm}
           onChange={handleSearch}
         />
-        <span className="absolute top-3 right-3 text-lightText">
+        <span className="absolute top-[10px] right-3">
           <CiSearch />
         </span>
       </div>
-    </>
+    </div>
   );
 
+  // Closes sidebar if user clicks on the overlay
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only close if user clicks *directly* on the overlay, not the sidebar.
+    if (e.target === e.currentTarget) {
+      setSidebarOpen(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen container mx-auto rounded-lg  bg-gradient-to-tr from-green via-yellow to-green py-8 px-4 my-4 md:my-8">
-      <div className="max-w-screen-xl mx-auto">
-        {/* Page Title */}
-        <h1 className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-lightText to-orange bg-clip-text text-transparent">
-          Allora Menu
-        </h1>
-
-        {/* MOBILE: Button to toggle dropdown (visible on small screens only) */}
-        <div className="flex md:hidden justify-end mb-4">
-          <button
-            onClick={toggleMobileMenu}
-            className="bg-gray-200 text-gray-700 py-2 px-4 rounded-md 
-                       hover:bg-gray-300 transition-colors duration-200 shadow-sm"
-          >
-            {isMobileMenuOpen ? "Hide Filters" : "Show Filters"}
-          </button>
-        </div>
-
-        {/* MOBILE: Dropdown container */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden flex flex-col gap-4 bg-white p-4 rounded-md shadow-sm mb-6">
-            {renderControls()}
-          </div>
-        )}
-
-        {/* DESKTOP: Grid layout (hidden on mobile) */}
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div className="min-h-screen relative">
+      {/* 
+        Overlay 
+        - show/hide via sidebarOpen
+        - covers entire screen
+        - fade in/out with opacity
+      */}
+      <div
+        onClick={handleOverlayClick}
+        className={`
+          fixed inset-0 z-50
+          bg-black/50
+          ${sidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"}
+          transition-opacity duration-500
+        `}
+      >
+        {/* 
+          Sidebar 
+          - slid in from the left with translate-x-0 or -translate-x-full
+          - smooth animation with transition-transform
+        */}
+        <div
+          className={`
+            absolute top-0 left-0 h-full w-64
+            bg-darkBg shadow-lg
+            transform transition-transform duration-500
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          `}
+        >
+          <h2 className="text-lg font-bold p-4 border-b">Filters</h2>
           {renderControls()}
         </div>
-
-        {/* Product List */}
-        <Product
-          // Example: pass searchTerm, categoryFilter, and sortBy as needed
-          // searchTerm={searchTerm}
-          // categoryFilter={categoryFilter}
-          // sortBy={sortBy}
-        />
       </div>
+
+      {/* 
+        Toggle Button 
+        - sits above everything else
+      */}
+      <button
+        className="p-2 border border-lightText rounded-lg bg-white
+                   hover:bg-darkBg transition-colors hover:text-darkText duration-300 
+                   fixed top-24 md:top-28 xl:top-[138px] left-2 text-lightText"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        {sidebarOpen ? <TbLayoutSidebarLeftCollapseFilled /> : <TbLayoutSidebarLeftExpandFilled />}
+      </button>
+
+      {/* Main Content */}
+      <main
+        className={`
+          transition-all duration-300
+          ${sidebarOpen ? "ml-0" : "ml-0"}
+        `}
+      >
+        <div className="p-4">
+          <h1 className="text-4xl font-bold mb-8 text-center">Allora Menu</h1>
+          <Product
+            // searchTerm={searchTerm}
+            // categoryFilter={categoryFilter}
+            // sortBy={sortBy}
+          />
+        </div>
+      </main>
     </div>
   );
 }

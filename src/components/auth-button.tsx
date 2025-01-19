@@ -21,13 +21,14 @@ import { addUser, deleteUser } from "@/redux/shoppingSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import { RiHeart2Fill } from "react-icons/ri";
 import LoadingSpinner from "./loading-spinner";
+import { CiLogin } from "react-icons/ci";
 
 const LogIn = () => {
     const { login, currentUser } = useAuthContext();
     return (
         !currentUser && (
-        <button type="button" className="btn btn-warning" onClick={login}>
-            Login
+        <button type="button" className="text-3xl text-lightText hover:scale-110 transition-transform hover:text-hoverBg" onClick={login}>
+            <CiLogin />
         </button>
         )
     );
@@ -37,7 +38,7 @@ const LogOut = () => {
     const { logout, currentUser } = useAuthContext();
     return (
     !!currentUser && (
-        <button type="button" className="btn btn-danger" onClick={logout}>
+        <button type="button" className="" onClick={logout}>
         Logout
         </button>
     )
