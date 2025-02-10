@@ -221,7 +221,7 @@ export default function Footer() {
             </p>
           </Link>
           <p className="text-sm md:text-base mt-1">
-            &copy; 2021 Allora Ristorante, P.IVA 02732810995. Tutti i diritti
+          <small>&copy; {new Date().getFullYear()} Allora Ristorante</small>, P.IVA 02732810995. Tutti i diritti
             riservati.
           </p>
         </div>

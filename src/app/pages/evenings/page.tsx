@@ -163,10 +163,10 @@ export default function Evenings() {
             {/* Section 1 */}
             <div className="space-y-4 bg-white/80 p-4 rounded-lg md:text-justify shadow-[0px_0px_10px_#967d48]">
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-darkText to-lightText">
-                La tradizione mediorientale vede da sempre il momento del pasto come una gioia e un'occasione per incontrarsi.
+                La tradizione mediorientale vede da sempre il momento del pasto come una gioia e un&apos;occasione per incontrarsi.
               </h3>
               <p>
-                Ti offriamo serate dove oltre al buon cibo preparato dei nostri chef, si alternano anche incontri culturali, con proposte culinarie speciali per celebrare occasioni o per consentire ai veri appassionati di esplorare gusti che non potrebbero trovare da nessun'altra parte. Organizziamo serate di lettura con presentazione di libri, poesie e piccoli spettacoli tradizionali e non, dibattiti e cultura. Quello che vogliamo è semplicemente permettere a chi ama vivere in un mondo aperto e senza limiti di poterlo fare e di riscoprire tutta l'importanza dello scambio. Ci piace vivere nella tradizione del Mar Mediterraneo, unendo due terre apparentemente lontane come la Liguria e il Medio Oriente, che da sempre comunicano tra loro attraverso le proprie flotte commerciali e che finalmente possono convivere in pace, imparando l'una dall'altra.
+                Ti offriamo serate dove oltre al buon cibo preparato dei nostri chef, si alternano anche incontri culturali, con proposte culinarie speciali per celebrare occasioni o per consentire ai veri appassionati di esplorare gusti che non potrebbero trovare da nessun&apos;altra parte. Organizziamo serate di lettura con presentazione di libri, poesie e piccoli spettacoli tradizionali e non, dibattiti e cultura. Quello che vogliamo è semplicemente permettere a chi ama vivere in un mondo aperto e senza limiti di poterlo fare e di riscoprire tutta l&apos;importanza dello scambio. Ci piace vivere nella tradizione del Mar Mediterraneo, unendo due terre apparentemente lontane come la Liguria e il Medio Oriente, che da sempre comunicano tra loro attraverso le proprie flotte commerciali e che finalmente possono convivere in pace, imparando l&apos;una dall&apos;altra.
               </p>
             </div>
           </motion.div>

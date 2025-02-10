@@ -88,7 +88,7 @@ export default function WhoWeAre() {
                 <div className="max-w-3xl flex flex-col space-y-6 text-2xl md:text-3xl lg:text-5xl leading-relaxed">
                     <p>
                         La Siria è una terra che da sempre ha influenzato tantissimo la cultura di
-                        tutta l'area Mediterranea e ha saputo fare suoi profumi e sapori unici che
+                        tutta l&apos;area Mediterranea e ha saputo fare suoi profumi e sapori unici che
                         provengono da terre lontane, facendoli arrivare in tanti porti con i suoi
                         marinai e le grandi navi che venivano a caricare le spezie lungo le
                         coste.
@@ -130,7 +130,7 @@ export default function WhoWeAre() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:text-left w-full mt-6">
                     <p className="text-xl md:text-2xl lg:text-3xl leading-relaxed">
                         Il nostro ristorante nel cuore di Genova ti permette un viaggio in
-                        un'atmosfera inconfondibile, che al tempo stesso è esotica e familiare
+                        un&apos;atmosfera inconfondibile, che al tempo stesso è esotica e familiare
                         perché rappresenta tutto il Mediterraneo. Siria e Libano con i loro porti,
                         infatti, per millenni hanno fatto arrivare le spezie sulle tavole di tutti
                         i paesi che si affacciano sul nostro grande mare e le navi hanno portato
@@ -140,7 +140,7 @@ export default function WhoWeAre() {
                         saputo crescere e influenzare tantissimo quella anche di posti lontani. In
                         un ambiente tranquillo e rilassante in puro stile mediorientale ti potrai
                         godere alcune fra le migliori pietanze della nostra tradizione, preparate
-                        con l'idea di farti viaggiare con il pensiero attraverso terre lontane per
+                        con l&apos;idea di farti viaggiare con il pensiero attraverso terre lontane per
                         capire che non sono così diverse dalla tua. Puoi scoprire tantissimi gusti
                         basati su carne di pollo e agnello, verdure, legumi e cereali, preparati
                         secondo una tradizione antica, dove a incontrarsi sono i sapori acidi
@@ -152,11 +152,11 @@ export default function WhoWeAre() {
                         la possibilità di scegliere piatti unici, oppure assaggi al tavolo con gli
                         amici. La nostra idea non è quella soltanto di un ristorante, ma di un
                         ambiente da vivere dove ti offriamo letture, musica tradizionale live, per
-                        creare l'atmosfera e tanto scambio culturale, anche con idee proposte dai
+                        creare l&apos;atmosfera e tanto scambio culturale, anche con idee proposte dai
                         nostri ospiti che vengono da posti lontani. Lasciati affascinare dal
-                        profumo coinvolgente della nostra cucina, dall'atmosfera calda e informale
+                        profumo coinvolgente della nostra cucina, dall&apos;atmosfera calda e informale
                         di uno spazio in cui si chiacchiera e si mangia, oppure gusta un tè
-                        speziato mentre ti godi l'ambiente, nelle serate speciali dedicate alla
+                        speziato mentre ti godi l&apos;ambiente, nelle serate speciali dedicate alla
                         cultura. Il nostro è uno spazio fatto di condivisione e di crescita dove
                         sentirsi a casa dal primo momento in cui entri, scoprendo il gusto di
                         mescolare idee vecchie e nuove per creare un posto pacifico in cui vivere

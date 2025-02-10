@@ -32,7 +32,7 @@
     "src/**/*.tsx",
     "src/__tests__/**/*.ts",
     "src/__tests__/**/*.tsx",
-    "jest.setup.js", "src/app/handlers/firestore.js",
+    "jest.setup.js", "src/app/handlers/firestore.js", "src/app/booking/available-shifts",
   ],
   "exclude": ["node_modules"]
 }

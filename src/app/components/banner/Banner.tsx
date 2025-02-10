@@ -142,8 +142,8 @@ const Banner: React.FC = () => {
         <h2 className="text-2xl md:text-5xl lg:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-lightText to-lightBg flex">Cucina siriana - libanese</h2>
         <div className="flex space-x-4 mt-4">
           <button className="px-3 md:px-6 py-1 md:py-2 rounded-lg md:bg-white/60 hover:bg-white/80 transition-colors duration-300 text-white/80 md:text-darkText">
-            <Link href="#about-us" className="transition-colors duration-300">
-              Scopri di più
+            <Link href="/booking" className="transition-colors duration-300">
+              prenota il tuo tavolo
             </Link>
           </button>
           <button className="px-3 md:px-6 py-1 md:py-2 rounded-lg md:bg-white/60 hover:bg-white/80 transition-colors duration-300 text-white/80 md:text-darkText">

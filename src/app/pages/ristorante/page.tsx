@@ -177,7 +177,7 @@ export default function Ristorante() {
               <p>
                 I nostri chef ti offrono un viaggio culinario nella culla della
                 cultura mediterranea, con uno scambio di suggestioni, in
-                un'atmosfera rilassante di un locale in stile tradizionale
+                un&apos;atmosfera rilassante di un locale in stile tradizionale
                 siriano, con un grande spazio aperto fatto proprio per chi a
                 tavola vuole sempre conoscere qualcosa di nuovo e godere di
                 sapori unici. Ti proponiamo un misto di cucine mediorientali,

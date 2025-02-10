@@ -16,7 +16,6 @@ const Navbar = () => {
     const { currentUser } = useAuthContext();
     const { productData, orderData } = useSelector((state: StateProps) => state.shopping);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const whatsappLink = "https://wa.me/393497068208?text=Salve%20Allora!";
 
     const navItems = useMemo(
         () => [
