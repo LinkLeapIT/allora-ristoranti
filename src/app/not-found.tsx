@@ -17,7 +17,7 @@ const NotFoundPage = () => {
           <p className='text-base md:text-2xl font-medium text-center text-link'>
               Oops! The page you are looking for is not available. It might have been moved or deleted.
           </p>
-          <Link href={"/"} className='bg-lightText text-slate-100 w-44 h-12 rounded-full text-base font-semibold flex items-center justify-center hover:bg-link duration-200'>
+          <Link href={"/"} className='bg-lightText text-white w-44 h-12 rounded-full text-base font-semibold flex items-center justify-center hover:bg-link duration-200'>
             Back to Home
           </Link>
         </div>
