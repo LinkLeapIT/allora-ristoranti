@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { getAuth, User } from "firebase/auth";
-import app from "../../firebase.config";
+import {auth} from "../../../firebase/client";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function ReservationDetailsPage() {
@@ -18,7 +18,6 @@ export default function ReservationDetailsPage() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const auth = getAuth(app);
     setUser(auth.currentUser);
   }, []);
 
@@ -42,7 +41,8 @@ export default function ReservationDetailsPage() {
           <strong>Name:</strong> {user?.displayName || "Guest"}
         </p>
         <p>
-          <strong>Phone:</strong> {user?.phoneNumber || phoneNumber || "Not provided"}
+          <strong>Phone:</strong>{" "}
+          {user?.phoneNumber || phoneNumber || "Not provided"}
         </p>
         <p>
           <strong>Shift ID:</strong> {shiftId}

@@ -1,28 +1,26 @@
+//app/components/productsData.tsx
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Card, Form } from "react-bootstrap";
-import { IoIosHeart } from "react-icons/io";
 import { HiViewfinderCircle } from "react-icons/hi2";
 import { IoBagAdd } from "react-icons/io5";
-import { ItemProps } from '../../../../type';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '@/redux/shoppingSlice';
-import toast, { Toaster } from 'react-hot-toast';
-
-// 1) Import AnimatePresence & motion from Framer Motion
-import { AnimatePresence, motion } from 'framer-motion';
-
-import { Modal } from '@/components/modal'; // Your custom modal
+import { ItemProps } from "../../../type/productType";
+import Image from "next/image";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/shoppingSlice";
+import toast, { Toaster } from "react-hot-toast";
+import { AnimatePresence, motion } from "framer-motion";
+import { Modal } from "@/components/modal";
+import IsFavourite from "@/app/product-search/is-favourite.server.tsx";
 
 const ProductsData = ({ product }: ItemProps) => {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string>(
-    product.sizes[0]?.size || ''
+    product.sizes[0]?.size || ""
   );
   const [extraIngredients, setExtraIngredients] = useState<string[]>([]);
   const [withoutOptions, setWithoutOptions] = useState<string[]>([]);
@@ -60,6 +58,7 @@ const ProductsData = ({ product }: ItemProps) => {
     toast.success(`${product.title.substring(0, 15)} added successfully!`);
     setExtraIngredients([]);
     setWithoutOptions([]);
+    setQuantity(1);
     handleClose();
   };
 
@@ -93,7 +92,7 @@ const ProductsData = ({ product }: ItemProps) => {
           <div className="flex flex-col items-center justify-center p-1 w-[260px] h-[260px] bg-darkBg rounded-t-full cursor-zoom-in">
             <Image
               className="rounded-full w-[250px] h-[250px]"
-              src={product.path || 'fallback-image-url'}
+              src={product.images?.[0] || "/allor-bbq.jpg"}
               onClick={handleOpenZoom}
               alt="Product"
               width={250}
@@ -101,14 +100,15 @@ const ProductsData = ({ product }: ItemProps) => {
             />
           </div>
           <div className="flex flex-col justify-between gap-y-2 bg-darkBg rounded-b-lg min-h-[160px]">
-            <div className='flex items-center justify-between p-2'>
-              <Link href={{ pathname: '/product', query: { id: product?.id } }}>
-                <HiViewfinderCircle className="text-darkText text-2xl hover:text-lightText duration-300 cursor-pointer" />
-              </Link>
+            <div className="flex items-center justify-between p-2">
+            <Link href={`/menu/${product?.id}`}>
+              <HiViewfinderCircle className="text-darkText text-2xl hover:text-lightText duration-300 cursor-pointer" />
+            </Link>
+
               <h3 className="text-center text-2xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent p-1 line-clamp-1 max-w-[192px]">
-              {product.title}
+                {product.title}
               </h3>
-              <IoIosHeart className="text-darkText text-2xl hover:text-lightText duration-300 cursor-pointer" />
+              <IsFavourite product={product} />
             </div>
 
             <p className="line-clamp-3 text-center max-w-[240px] h-[66px] mx-auto">
@@ -117,7 +117,7 @@ const ProductsData = ({ product }: ItemProps) => {
 
             <div className="flex flex-row items-center justify-between p-2">
               <h3 className="text-lg font-extrabold text-lightText">
-                {totalPrice.toFixed(2)} €
+                {product.sizes[0].price} €
               </h3>
               <button
                 onClick={handleShow}
@@ -153,16 +153,12 @@ const ProductsData = ({ product }: ItemProps) => {
               exit="exit"
               transition={{ duration: 0.3 }}
             >
-              <Modal
-                isOpen={show}
-                onClose={handleClose}
-                title={product.title}
-              >
+              <Modal isOpen={show} onClose={handleClose} title={product.title}>
                 {/* product image */}
                 <div className="mx-auto flex flex-col items-center justify-center my-4 cursor-zoom-in">
                   <Image
                     className="rounded-full w-[250px] h-[250px]"
-                    src={product.path || 'fallback-image-url'}
+                    src={product.images?.[0] || "/allor-bbq.jpg"}
                     onClick={handleOpenZoom}
                     alt="Product"
                     width={250}
@@ -172,9 +168,7 @@ const ProductsData = ({ product }: ItemProps) => {
 
                 {/* product description */}
                 <div className="flex flex-col items-center justify-center pb-4">
-                  <p className="text-lg text-center">
-                    {product.description}
-                  </p>
+                  <p className="text-lg text-center">{product.description}</p>
                 </div>
 
                 {/* Modal Body */}
@@ -183,21 +177,31 @@ const ProductsData = ({ product }: ItemProps) => {
                     {/* Extra Ingredients */}
                     <Form.Group>
                       <Form.Label className="text-xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent pb-2">
-                      Opzioni Extra:
+                        Opzioni Extra:
                       </Form.Label>
                       {product.extraIngredients.map((ingredient) => {
-                      const checked = extraIngredients.includes(ingredient.ingredient);
+                        const checked = extraIngredients.includes(
+                          ingredient.ingredient
+                        );
 
-                      return (
-                        <Form.Check key={ingredient.ingredient} className="flex items-center gap-2 mt-4">
-                        {/* Custom-styled checkbox input */}
-                        <Form.Check.Input
-                          type="checkbox"
-                          id={ingredient.ingredient}
-                          value={ingredient.ingredient}
-                          checked={checked}
-                          onChange={() => handleCheckboxChange(ingredient.ingredient, setExtraIngredients)}
-                          className="
+                        return (
+                          <Form.Check
+                            key={ingredient.ingredient}
+                            className="flex items-center gap-2 mt-4"
+                          >
+                            {/* Custom-styled checkbox input */}
+                            <Form.Check.Input
+                              type="checkbox"
+                              id={ingredient.ingredient}
+                              value={ingredient.ingredient}
+                              checked={checked}
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  ingredient.ingredient,
+                                  setExtraIngredients
+                                )
+                              }
+                              className="
                           appearance-none
                           relative
                           w-5 h-5
@@ -219,37 +223,42 @@ const ProductsData = ({ product }: ItemProps) => {
                           after:-translate-x-1/2
                           after:-translate-y-1/2
                           "
-                        />
+                            />
 
-                        {/* Label text */}
-                        <Form.Check.Label
-                          htmlFor={ingredient.ingredient}
-                          className="cursor-pointer"
-                        >
-                          {ingredient.ingredient} (+{ingredient.price})
-                        </Form.Check.Label>
-                        </Form.Check>
-                      );
+                            {/* Label text */}
+                            <Form.Check.Label
+                              htmlFor={ingredient.ingredient}
+                              className="cursor-pointer"
+                            >
+                              {ingredient.ingredient} (+{ingredient.price})
+                            </Form.Check.Label>
+                          </Form.Check>
+                        );
                       })}
                     </Form.Group>
 
                     <Form.Group>
                       <Form.Label className="text-xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent pb-2">
-                      Senza Opzioni
+                        Senza Opzioni
                       </Form.Label>
 
                       {product.withoutOptions.map((option) => {
                         const checked = withoutOptions.includes(option);
 
                         return (
-                          <Form.Check key={option} className="flex items-center gap-2 mt-4">
+                          <Form.Check
+                            key={option}
+                            className="flex items-center gap-2 mt-4"
+                          >
                             {/* Custom-styled checkbox input */}
                             <Form.Check.Input
                               type="checkbox"
                               id={option}
                               value={option}
                               checked={checked}
-                              onChange={() => handleCheckboxChange(option, setWithoutOptions)}
+                              onChange={() =>
+                                handleCheckboxChange(option, setWithoutOptions)
+                              }
                               className="
                                 appearance-none
                                 relative
@@ -299,7 +308,9 @@ const ProductsData = ({ product }: ItemProps) => {
                         >
                           -
                         </button>
-                        <span className="text-xl font-semibold">{quantity}</span>
+                        <span className="text-xl font-semibold">
+                          {quantity}
+                        </span>
                         <button
                           type="button"
                           onClick={() => setQuantity((q) => q + 1)}
@@ -311,7 +322,7 @@ const ProductsData = ({ product }: ItemProps) => {
                     </Form.Group>
 
                     {/* Size Selection */}
-                    <Form.Group className='flex flex-col'>
+                    <Form.Group className="flex flex-col">
                       <Form.Label className="text-xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent pb-2">
                         Scegli una taglia:
                       </Form.Label>
@@ -366,8 +377,8 @@ const ProductsData = ({ product }: ItemProps) => {
         >
           <div className="relative max-w-4xl w-full h-auto">
             <Image
-            onClick={handleOpenZoom}
-              src={product.path || 'fallback-image-url'}
+              onClick={handleOpenZoom}
+              src={product.images?.[0] || "/allor-bbq.jpg"}
               alt="Zoomed Image"
               className="object-contain w-full max-h-[90vh]"
               priority={false}

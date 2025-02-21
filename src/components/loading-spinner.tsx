@@ -1,33 +1,16 @@
 'use client';
 
 import React from 'react';
-import { ImSpinner10 } from "react-icons/im";
-
+import { Skeleton } from './ui/skeleton';
+import alloraLogo from "../../public/assets/images/logo.png";
+import Image from 'next/image';
 interface LoadingSpinnerProps {
   text?: string;       // Optional prop for custom loading text
   showText?: boolean;  // Optional prop to show or hide the loading text
   size?: 'small' | 'medium' | 'large'; // Optional spinner size
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  text = 'Loading...',
-  showText = true,
-  size = 'medium',
-}) => {
-  // Define spinner icon sizes based on the `size` prop
-  const spinnerSize = {
-    small: 'text-3xl',    // Slightly smaller spinner icon
-    medium: 'text-5xl',   // Default medium size
-    large: 'text-7xl',    // Larger spinner
-  };
-
-  // Define text sizes for matching the spinner
-  const textSize = {
-    small: 'text-sm',
-    medium: 'text-base',
-    large: 'text-xl',
-  };
-
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = () => {
   return (
     <div
       className="
@@ -35,26 +18,9 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       "
     >
       {/* Icon for loading animation with dynamic size */}
-      <ImSpinner10
-        className={`
-          ${spinnerSize[size]} 
-          text-lightText
-          animate-spin 
-          mb-3
-        `}
-      />
-      
-      {/* Conditionally render loading text below the spinner */}
-      {showText && (
-        <p
-          className={`
-            ${textSize[size]} 
-            font-semibold text-lightText animate-pulse
-          `}
-        >
-          {text}
-        </p>
-      )}
+      <Skeleton className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full flex justify-center items-center">
+        <Image src={alloraLogo} alt='Allora Logo' width={100} height={100} priority className='w-[100px] h-[100px]'/>
+      </Skeleton>
     </div>
   );
 };

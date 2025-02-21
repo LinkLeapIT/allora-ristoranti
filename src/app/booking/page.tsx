@@ -2,8 +2,8 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import app from "../firebase.config";
+import { onAuthStateChanged, User } from "firebase/auth";
+import {auth} from "../../firebase/client";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -13,7 +13,6 @@ export default function BookingHomePage() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [reservationDate, setReservationDate] = useState<string>("");
   const [expectedArrivalTime, setExpectedArrivalTime] = useState<string>("");
-  const auth = getAuth(app);
   const router = useRouter();
 
   // Check if the user is logged in
@@ -26,7 +25,7 @@ export default function BookingHomePage() {
       }
     });
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   // Handle the form submission
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

@@ -1,24 +1,28 @@
 "use client";
 
 import React from "react";
-import { useAuthContext } from "./contexts/AuthContext";
+import { useAuth } from "./context/auth";
 import Navbar from "@/app/components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import { Toaster } from "@/components/ui/toaster";
+import LoadingSpinner from "@/components/loading-spinner";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
-
-  const authContext = useAuthContext();
+  const authContext = useAuth();
 
   if (!authContext) {
-    throw new Error("useAuthContext must be used within an AuthProvider");
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
-  const { authenticate } = authContext;
-  
   return (
     <>
       <Navbar />
-      {children}
+      <main>{children}</main>
+      <Toaster />
       <Footer />
     </>
   );

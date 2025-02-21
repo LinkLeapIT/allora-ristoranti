@@ -1,45 +1,22 @@
-import Firestore from "@/app/handlers/firestore";
-import { Products } from "../../type";
-
-export const getProducts = async (): Promise<Products[]> => {
-  try {
-    const res = await fetch("http://localhost:3000/api/products");
-    if (!res.ok) {
-      throw new Error("Failed to fetch products");
-    }
-    const data = await res.json();
-    if (!Array.isArray(data.items)) {
-      throw new Error("API did not return an array");
-    }
-    return data.items;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`An error occurred while fetching products: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred while fetching products");
-    }
-  }
-};
+"use server"
+import { Products } from "../type/productType";
+import { getProductById } from '@/data/products';
 
 export const getSingleProduct = async (id: string): Promise<Products | undefined> => {
   try {
-    if (!id) {
-      throw new Error("Invalid product ID");
+    const productDoc = await getProductById(id);
+    if (!productDoc) {
+      throw new Error("Product not found");
     }
-    const items: Products[] = await Firestore.readDocs('products');
-    const product = items.find((item) => item.id === id);
-    if (!product) {
-      throw new Error(`Product with id ${id} not found`);
-    }
+    const product = {
+      id: productDoc.id,
+      ...(productDoc as any).data()
+    } as Products;
     return product;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`An error occurred while fetching the product: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred while fetching the product");
-    }
+  } catch (error: any) {
+    throw new Error(error?.message || "Error fetching product");
   }
-};
+}
 
 
 
