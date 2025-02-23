@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useMemo, useState, useCallback } from "react";
+import { firestore, storage } from "@/firebase/client";
+import { deleteDoc, doc } from "firebase/firestore"; 
+import { ref, deleteObject } from "firebase/storage";
 import Link from "next/link";
 import { Trash2, Info, Pencil } from "lucide-react";
-
 import { Products } from "@/type/productType";
 import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
@@ -29,9 +31,8 @@ export default function ProductsTableClient({
 
   const { toast, ToastContainer } = useToast();
 
-  // ✅ Wrapped handleDelete with useCallback
   const handleDelete = useCallback(
-    (id: string) => {
+    (id: string, imagePath?: string) => {
       if (!id) {
         toast({
           title: "Missing Product ID",
@@ -40,7 +41,7 @@ export default function ProductsTableClient({
         });
         return;
       }
-
+  
       toast({
         title: "Are you sure?",
         description: "Click below to confirm deletion of this product.",
@@ -54,11 +55,21 @@ export default function ProductsTableClient({
                 description: "Please wait while we delete the product.",
                 variant: "default",
               });
-
+  
               try {
-                // Mock API call or action to delete the product
+                // ✅ Delete product from Firebase Firestore (client-side)
+                await deleteDoc(doc(firestore, "products", id));
+  
+                // ✅ Delete associated image from Firebase Storage
+                if (imagePath) {
+                  const imageRef = ref(storage, imagePath);
+                  await deleteObject(imageRef);
+                  console.log(`Image deleted from storage: ${imagePath}`);
+                }
+  
+                // ✅ Update UI after deletion
                 setList((prev) => prev.filter((p) => p.id !== id));
-
+  
                 toast({
                   title: "Product Deleted",
                   description: "The product has been deleted successfully.",
@@ -70,6 +81,7 @@ export default function ProductsTableClient({
                   description: "Failed to delete the product. Please try again.",
                   variant: "destructive",
                 });
+                console.error("Error deleting product or image:", error);
               } finally {
                 setDeletingId(null);
               }
@@ -91,10 +103,10 @@ export default function ProductsTableClient({
         isClosable: true,
       });
     },
-    [toast] // Only re-create handleDelete when toast changes
+    [toast]
   );
-
-  // Define columns
+  
+  
   const columns = useMemo(
     () => [
       { title: "Product Name", key: "title" as const },

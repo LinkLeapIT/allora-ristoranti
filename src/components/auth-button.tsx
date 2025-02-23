@@ -21,12 +21,6 @@ import { CiLogin } from "react-icons/ci";
 import dynamic from "next/dynamic";
 import LoadingSpinner from "./loading-spinner";
 
-// Dynamically import the server component for favourites count
-const FavouritesCount = dynamic(
-  () => import("@/components/FavouritesCount.server"),
-  { ssr: true }
-);
-
 const LogIn = () => (
   <Link href="/login" className="text-3xl text-lightText hover:scale-110 transition-transform hover:text-hoverBg">
     <CiLogin />
@@ -91,11 +85,8 @@ export default function AuthButtons() {
 
   return currentUser ? (
     <div className="flex items-center gap-4">
-      <Link href="/account/my-favourites" className="relative">
+      <Link href="/my-favourites" className="relative">
         <RiHeart2Fill className="text-3xl text-lightText hover:text-hoverBg duration-300 hover:scale-110 transition-transform cursor-pointer" />
-        <Suspense fallback={<div>Loading...</div>}>
-          <FavouritesCount />
-        </Suspense>
       </Link>
 
       <DropdownMenu>

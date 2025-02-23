@@ -5,21 +5,23 @@ import { getProductForEdit } from "@/app/actions/createProduct";
 import EditProductForm from "./EditProductForm";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id?: string;
-  };
+  }>;
 }
 
 // By default, App Router page files are "server" components
 export default async function EditProductPage({ params }: PageProps) {
+  const resolvedParams = await params;
+
   // 1) Validate the ID
-  if (!params?.id) {
+  if (!resolvedParams?.id) {
     notFound(); // Or redirect("/404");
   }
 
   try {
     // 2) Attempt to fetch product data
-    const product = await getProductForEdit(params.id!);
+    const product = await getProductForEdit(resolvedParams.id!);
 
     // 3) If no product found, go to 404
     if (!product) {
@@ -40,8 +42,10 @@ export default async function EditProductPage({ params }: PageProps) {
 
 // For SEO
 export async function generateMetadata({ params }: PageProps) {
+  const resolvedParams = await params;
+
   try {
-    const product = await getProductForEdit(params.id!);
+    const product = await getProductForEdit(resolvedParams.id!);
 
     if (product) {
       return {

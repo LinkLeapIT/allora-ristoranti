@@ -1,14 +1,14 @@
-// app/api/favourites/[action]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth, firestore } from "@/firebase/server"; 
-import { FieldValue } from "firebase-admin/firestore";
+import admin from "firebase-admin"; // Ensure correct FieldValue usage
 import "server-only";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { action: string } }
+  { params }: { params: Promise<{ action: string }> } // Expect params as a Promise
 ) {
-  const { action } = params;
+  const resolvedParams = await params; // Await the params to avoid Promise type errors
+  const { action } = resolvedParams; // Destructure safely
   const { productId } = await request.json();
 
   const token = request.cookies.get("firebaseAuthToken")?.value;
@@ -27,7 +27,7 @@ export async function POST(
     if (action === "add") {
       await userDoc.set({ [productId]: true }, { merge: true });
     } else if (action === "remove") {
-      await userDoc.update({ [productId]: FieldValue.delete() });
+      await userDoc.update({ [productId]: admin.firestore.FieldValue.delete() });
     } else {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }

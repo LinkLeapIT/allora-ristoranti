@@ -1,6 +1,6 @@
 import React from 'react'
 import MyFavourite from './MyFavourite.server'
-import bgImage from "../../../../public/assets/images/baground.jpg";
+import bgImage from "../../../public/assets/images/baground.jpg";
 import Container from '@/app/components/navbar/Container';
 
 

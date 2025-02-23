@@ -2,13 +2,15 @@
 import ProductDetails from "./ProductDetails";
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const ProductPage = ({ params }: ProductPageProps) => {
-  return <ProductDetails params={params} />;
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const resolvedParams = await params; // Awaiting the promise to safely access 'id'
+  
+  return <ProductDetails params={resolvedParams} />;
 };
 
 export default ProductPage;

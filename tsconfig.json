@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,16 +16,23 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "typeRoots": ["./node_modules/@types"],
-    "types": [ "react-bootstrap"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "types": [
+      "react-bootstrap"
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
@@ -32,7 +43,11 @@
     "src/**/*.tsx",
     "src/__tests__/**/*.ts",
     "src/__tests__/**/*.tsx",
-    "jest.setup.js", "src/app/handlers/firestore.ts", "src/app/booking/available-shifts",
+    "jest.setup.js",
+    "src/app/handlers/firestore.ts",
+    "src/app/booking/available-shifts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
