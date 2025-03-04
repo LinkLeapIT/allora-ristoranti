@@ -36,7 +36,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      await auth?.loginWithEmail(data.email, data.password);
+      await auth?.loginWithEmail( data.email, data.password);
       onSuccess?.();
     } catch (e: any) {
       toast({
