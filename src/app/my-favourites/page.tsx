@@ -1,8 +1,10 @@
+// app/my-favourites/page.tsx
 import React from 'react'
 import MyFavourite from './MyFavourite.server'
 import bgImage from "../../../public/assets/images/baground.jpg";
 import Container from '@/app/components/navbar/Container';
 
+export const dynamic = "force-dynamic"; // 💥 This fixes the build error
 
 function MyFavorite() {
   return (
@@ -22,4 +24,4 @@ function MyFavorite() {
   )
 }
 
-export default MyFavorite
+export default MyFavorite;

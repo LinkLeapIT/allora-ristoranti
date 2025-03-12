@@ -1,3 +1,4 @@
+//data/favourites
 import { auth, firestore } from "@/firebase/server";
 import { cookies } from "next/headers";
 
@@ -26,3 +27,4 @@ export const getUserFavourites = async () => {
     return {};
   }
 };
+//

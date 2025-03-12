@@ -18,3 +18,4 @@ export default async function MyFavourite() {
   // Render the client component, passing down the product data
   return <MyFavouriteClient products={products} />;
 }
+//
