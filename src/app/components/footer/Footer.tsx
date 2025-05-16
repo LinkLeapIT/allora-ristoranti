@@ -205,7 +205,7 @@ export default function Footer() {
             </Link>
             <Link href={"/cart"}>
               <li className="cursor-pointer transition-transform duration-200 hover:scale-110 hover:text-lightText">
-                Prenota subito il tuo tavolo
+                Prenota Subito Il Tuo Tavolo
               </li>
             </Link>
           </ul>
