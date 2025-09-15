@@ -1,7 +1,7 @@
 // ./src/redux/shoppingSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Products, CartItem } from "../type/productType";
-import { isEqual } from "lodash";
+import isEqual from "lodash.isequal";
 
 interface UserInfo {
   name: string;
