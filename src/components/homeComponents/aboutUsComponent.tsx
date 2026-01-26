@@ -60,7 +60,7 @@ const AboutUsComponent = () => {
   }, [imageInViewRef]);
 
   return (
-    <section className="w-full relative bg-gradient-to-tr from-lightBg via-hoverBg to-lightBg">
+    <section id="about-us" className="w-full relative bg-gradient-to-tr from-lightBg via-hoverBg to-lightBg">
       <div className=" max-w-contentContainer mx-auto flex flex-col gap-5 lg:grid lg:grid-cols-2 text-center py-4 md:py-8 px-4">
         {/* Text Section */}
         <motion.div
@@ -85,11 +85,6 @@ const AboutUsComponent = () => {
           initial="hidden"
           animate={imageInView ? "visible" : "hidden"}
           variants={imageVariants}
-          style={{
-          backgroundPositionX: 0,
-          backgroundPositionY: 0,
-          backgroundSize: 150,
-          }}
         >
           <Image src={allora_window} alt="OTS Partners" width={1024} height={1024} className="w-full rounded-lg" />
         </motion.div>

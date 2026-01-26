@@ -1,10 +1,9 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Provider } from "react-redux";
 import { AuthProvider } from "./context/auth";
-import { persistor, store } from "@/redux/store";
-import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -13,9 +12,7 @@ interface AppProvidersProps {
 export default function AppProviders({ children }: AppProvidersProps) {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <AuthProvider>{children}</AuthProvider>
-      </PersistGate>
+      <AuthProvider>{children}</AuthProvider>
     </Provider>
   );
 }

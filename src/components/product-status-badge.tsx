@@ -1,16 +1,18 @@
-import { ProductStatus } from "@/type/productType";
+import { ProductStatus } from "@/types";
 import { Badge } from "./ui/badge";
 
 const statusLabel = {
     available: "Available",
-    "sold out": "Sold out",
+    unavailable: "Unavailable",
+    hidden: "Hidden",
 };
 
 const variant: {
   [key: string]: "default" | "destructive" | "secondary" | "outline";
 } = {
     available: "default",
-    "sold out": "destructive",
+    unavailable: "destructive",
+    hidden: "secondary",
 };
 
 export default function ProductStatusBadge({

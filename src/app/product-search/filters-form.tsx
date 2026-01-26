@@ -27,9 +27,9 @@ export default function FiltersForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      maxPrice: searchParams.get("maxPrice") ?? "",
-      minBedrooms: searchParams.get("minBedrooms") ?? "",
-      minPrice: searchParams.get("minPrice") ?? "",
+      maxPrice: searchParams?.get("maxPrice") ?? "",
+      minBedrooms: searchParams?.get("minBedrooms") ?? "",
+      minPrice: searchParams?.get("minPrice") ?? "",
     },
   });
 

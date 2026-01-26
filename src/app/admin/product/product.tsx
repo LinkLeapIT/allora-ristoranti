@@ -8,22 +8,21 @@ import useToast from "@/components/use-toast";
 import { Card } from "@/components/ui/card";
 import { Table } from "@/components/ui/table";
 import { Modal } from "@/components/ui/modal";
-import { deleteProduct, fetchProducts } from "@/app/actions/createProduct";
-import { Products } from "../../../type/productType";
+import { deleteProduct, getProducts } from "@/app/actions/productActions";
+import { Products } from "@/types";
 
 const ProductTable: React.FC = () => {
   const [products, setProducts] = useState<Products[]>([]);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
   const [selectedDescription, setSelectedDescription] = useState<{ name: string; description: string } | null>(null);
 
   const { toast, ToastContainer } = useToast();
 
-  // Fetch products using a server action
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const fetchedProducts = await fetchProducts();
-        setProducts(fetchedProducts);
+        const fetchedProducts = await getProducts();
+        setProducts(fetchedProducts as unknown as Products[]);
       } catch (error) {
         toast({
           title: "Error",
@@ -35,13 +34,12 @@ const ProductTable: React.FC = () => {
     loadProducts();
   }, [toast]);
 
-  // Handle product deletion (useCallback to avoid recreating the function)
   const handleDelete = useCallback(
-    async (id: string) => {
-      if (!id) {
+    async (slug: string) => {
+      if (!slug) {
         toast({
-          title: "Missing Product ID",
-          description: "Cannot delete product without a valid ID.",
+          title: "Missing Product Slug",
+          description: "Cannot delete product without a valid slug.",
           variant: "destructive",
         });
         return;
@@ -54,7 +52,7 @@ const ProductTable: React.FC = () => {
         action: (
           <button
             onClick={async () => {
-              setDeletingId(id);
+              setDeletingSlug(slug);
               toast({
                 title: "Deleting Product",
                 description: "Please wait while we delete the product.",
@@ -62,8 +60,8 @@ const ProductTable: React.FC = () => {
               });
 
               try {
-                await deleteProduct(id);
-                setProducts((prev) => prev.filter((product) => product.id !== id));
+                await deleteProduct(slug);
+                setProducts((prev) => prev.filter((product) => product.slug !== slug));
                 toast({
                   title: "Product Deleted",
                   description: "The product has been deleted successfully.",
@@ -76,7 +74,7 @@ const ProductTable: React.FC = () => {
                   variant: "destructive",
                 });
               } finally {
-                setDeletingId(null);
+                setDeletingSlug(null);
               }
             }}
             style={{
@@ -99,7 +97,6 @@ const ProductTable: React.FC = () => {
     [toast]
   );
 
-  // Table columns
   const columns = useMemo(
     () => [
       { title: "Product Name", key: "title" as const },
@@ -112,16 +109,15 @@ const ProductTable: React.FC = () => {
     []
   );
 
-  // Transform products into table-ready data
   const tableData = useMemo(
     () =>
       products.map((product) => ({
         ...product,
-        createdAt: product.createdAt instanceof Date ? product.createdAt.toISOString() : null,
-        updateAt: product.updateAt instanceof Date ? product.updateAt.toISOString() : null,
+        createdAt: product.createdAt ? new Date(product.createdAt).toISOString() : null,
+        updateAt: product.updateAt ? new Date(product.updateAt).toISOString() : null,
         extraIngredients: (
           <ul className="list-disc list-inside">
-            {product.extraIngredients.map((ingredient, index) => (
+            {(product.extraIngredients || []).map((ingredient, index) => (
               <li key={index}>
                 {ingredient.ingredient} - ${ingredient.price.toFixed(2)}
               </li>
@@ -131,14 +127,14 @@ const ProductTable: React.FC = () => {
         actions: (
           <div className="flex items-center justify-center gap-3 min-w-[200px]">
             <Button
-              onClick={() => handleDelete(product.id as string)}
+              onClick={() => handleDelete(product.slug as string)}
               variant="destructive"
               size="sm"
-              disabled={deletingId === product.id}
+              disabled={deletingSlug === product.slug}
               className="inline-flex items-center gap-2"
             >
               <Trash2 className="h-4 w-4 shrink-0" strokeWidth={2} />
-              {deletingId === product.id ? "Deleting..." : "Delete"}
+              {deletingSlug === product.slug ? "Deleting..." : "Delete"}
             </Button>
             <Button
               size="sm"
@@ -153,7 +149,7 @@ const ProductTable: React.FC = () => {
               <Info className="h-4 w-4" />
               View Description
             </Button>
-            <Link href={`/admin/product/edit/${product.id}`}>
+            <Link href={`/admin/product/edit/${product.slug}`}>
               <Button size="sm" className="inline-flex items-center gap-2">
                 <Pencil className="h-4 w-4 shrink-0" strokeWidth={2} />
                 Edit
@@ -162,7 +158,7 @@ const ProductTable: React.FC = () => {
           </div>
         ),
       })),
-    [products, handleDelete, deletingId]
+    [products, handleDelete, deletingSlug]
   );
 
   return (
@@ -171,7 +167,7 @@ const ProductTable: React.FC = () => {
       <Table
         data={tableData}
         columns={columns}
-        rowKey="id"
+        rowKey="slug"
         loading={!products.length}
         pagination={{ pageSize: 10 }}
       />

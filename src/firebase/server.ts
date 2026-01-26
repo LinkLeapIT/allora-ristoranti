@@ -1,50 +1,29 @@
-// firebase/server.ts
-import { Firestore, getFirestore } from "firebase-admin/firestore";   
-import { getApps, ServiceAccount } from "firebase-admin/app";
-import admin from "firebase-admin";
-import { Auth, getAuth } from "firebase-admin/auth";
+import admin from 'firebase-admin';
+import { getApps } from 'firebase-admin/app';
 
-const serviceAccount = {
-  type: "service_account",
-  project_id: "allora-menu",
-  private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
-  private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n").trim(),
-  client_email: process.env.FIREBASE_CLIENT_EMAIL,
-  client_id: process.env.FIREBASE_CLIENT_ID,
-  auth_uri: "https://accounts.google.com/o/oauth2/auth",
-  token_uri: "https://oauth2.googleapis.com/token",
-  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-u04hy%40allora-menu.iam.gserviceaccount.com",
-  universe_domain: "googleapis.com"
-};
-
-let firestore: Firestore;
-let auth: Auth;
-const currentApps = getApps();
-
-if (!currentApps.length) {
-  const firebaseApp = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as ServiceAccount),
-  });
-  firestore = getFirestore(firebaseApp);
-  auth = getAuth(firebaseApp);
-} else {
-  const firebaseApp = currentApps[0];
-  firestore = getFirestore(firebaseApp);
-  auth = getAuth(firebaseApp);
+// Check if the service account key is available
+if (!process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+  throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not set.');
 }
 
-export { firestore, auth };
+// Parse the service account key from the environment variable
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
-// Utility to get total pages
-export const getTotalPages = async (
-  firestoreQuery: FirebaseFirestore.Query<FirebaseFirestore.DocumentData>,
-  pageSize: number
-) => {
-  const queryCount = firestoreQuery.count();
-  const countSnapshot = await queryCount.get();
-  const countData = countSnapshot.data();
-  const total = countData.count;
-  const totalPages = Math.ceil(total / pageSize);
-  return totalPages;
+// Initialize Firebase Admin SDK if it hasn't been already
+if (!getApps().length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
+
+const firestore = admin.firestore();
+const auth = admin.auth();
+
+const setAdminClaim = async (uid: string) => {
+  await auth.setCustomUserClaims(uid, { admin: true });
+  console.log(`Custom claim set for UID: ${uid}`);
 };
+
+
+
+export { admin, firestore, auth, setAdminClaim };

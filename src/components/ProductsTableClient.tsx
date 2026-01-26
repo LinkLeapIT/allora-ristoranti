@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useMemo, useState, useCallback } from "react";
-import { firestore, storage } from "@/firebase/client";
-import { deleteDoc, doc } from "firebase/firestore"; 
-import { ref, deleteObject } from "firebase/storage";
 import Link from "next/link";
 import { Trash2, Info, Pencil } from "lucide-react";
-import { Products } from "@/type/productType";
+import { Products } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
+import { Badge } from "@/components/ui/badge";
 import useToast from "@/components/use-toast";
+import { deleteProduct } from "@/app/actions/delete-product";
 
 interface ProductsTableClientProps {
   products: Products[];
@@ -32,7 +31,7 @@ export default function ProductsTableClient({
   const { toast, ToastContainer } = useToast();
 
   const handleDelete = useCallback(
-    (id: string, imagePath?: string) => {
+    (id: string) => {
       if (!id) {
         toast({
           title: "Missing Product ID",
@@ -57,17 +56,7 @@ export default function ProductsTableClient({
               });
   
               try {
-                // ✅ Delete product from Firebase Firestore (client-side)
-                await deleteDoc(doc(firestore, "products", id));
-  
-                // ✅ Delete associated image from Firebase Storage
-                if (imagePath) {
-                  const imageRef = ref(storage, imagePath);
-                  await deleteObject(imageRef);
-                  console.log(`Image deleted from storage: ${imagePath}`);
-                }
-  
-                // ✅ Update UI after deletion
+                await deleteProduct(id);
                 setList((prev) => prev.filter((p) => p.id !== id));
   
                 toast({
@@ -81,7 +70,7 @@ export default function ProductsTableClient({
                   description: "Failed to delete the product. Please try again.",
                   variant: "destructive",
                 });
-                console.error("Error deleting product or image:", error);
+                console.error("Error deleting product:", error);
               } finally {
                 setDeletingId(null);
               }
@@ -112,7 +101,7 @@ export default function ProductsTableClient({
       { title: "Product Name", key: "title" as const },
       { title: "Description", key: "description" as const },
       { title: "Price (USD)", key: "price" as const },
-      { title: "Stock Quantity", key: "quantity" as const },
+      { title: "Status", key: "status" as const },
       { title: "Actions", key: "actions" as const },
     ],
     []
@@ -122,6 +111,15 @@ export default function ProductsTableClient({
   const tableData = useMemo(() => {
     return list.map((product) => ({
       ...product,
+      status: (
+        <Badge
+          variant={
+            product.status === "available" ? "success" : product.status === "hidden" ? "secondary" : "destructive"
+          }
+        >
+          {product.status}
+        </Badge>
+      ),
       actions: (
         <div className="flex items-center justify-center gap-3 min-w-[200px]">
           <Button

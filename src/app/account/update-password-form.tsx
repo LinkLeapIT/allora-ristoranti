@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/app/context/auth";
 import { useToast } from "@/hooks/use-toast";
-import { passwordValidation } from "@/validation/registerUser";
+import { passwordValidation } from "@/validation/passwordValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   EmailAuthProvider,
@@ -24,9 +24,9 @@ import { z } from "zod";
 
 const formSchema = z
   .object({
-    currentPassword: passwordValidation,
-    newPassword: passwordValidation,
-    newPasswordConfirm: z.string(),
+    currentPassword: z.string(),
+    newPassword: passwordValidation.shape.password,
+    newPasswordConfirm: passwordValidation.shape.password,
   })
   .superRefine((data, ctx) => {
     if (data.newPassword !== data.newPasswordConfirm) {

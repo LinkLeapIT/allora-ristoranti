@@ -4,9 +4,7 @@ import type { Config } from "tailwindcss";
 const config: Config = {
     darkMode: ["class"],
     content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
   	extend: {
@@ -14,12 +12,7 @@ const config: Config = {
   			container: '1400px',
   			contentContainer: '1200px'
   		},
-  		fontFamily: {
-  			bodyFont: [
-  				'Edu TAS Beginner',
-                    ...defaultTheme.fontFamily.sans
-                ]
-  		},
+  		fontFamily: {},
   		screens: {
   			xs: '320px',
   			sm: '375px',
@@ -37,7 +30,7 @@ const config: Config = {
   			darkBg: '#f6f6f6',
   			lightBg: '#ffffff',
   			hoverBg: '#acacac',
-			link: '#eadbc7',
+  			link: '#eadbc7',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

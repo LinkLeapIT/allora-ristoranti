@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/app/context/auth";
-import { passwordValidation } from "../validation/registerUser";
+import { passwordValidation } from "../validation/passwordValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import useToast from "./use-toast";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: passwordValidation,
+  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {

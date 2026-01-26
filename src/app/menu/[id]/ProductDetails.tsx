@@ -3,7 +3,7 @@
 
 import { notFound } from "next/navigation";
 import ProductClient from "./ProductClient"; // Client Component
-import { getProduct } from "@/app/actions/getProduct";
+import { getProduct } from "@/app/actions/productActions";
 
 interface ProductDetailsProps {
   params: {

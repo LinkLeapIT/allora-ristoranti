@@ -1,14 +1,5 @@
 @tailwind base;
 
-@font-face{
-    font-family: "Edu TAS Beginner";
-    src: url("../../fonts/Edu-TAS-Beginner.woff2");
-    font-display: block;
-    font-style: normal;
-    font-weight: 300 900;
-    font-stretch: 75% 12%;
-}
-
 @layer base {
   :root {
         --background: 0 0% 100%;

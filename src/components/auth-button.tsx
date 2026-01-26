@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -12,13 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { useDispatch } from "react-redux";
 import { useAuth } from "@/app/context/auth";
-import { addUser, deleteUser } from "@/redux/shoppingSlice";
 import { AiOutlineUser } from "react-icons/ai";
-import { RiHeart2Fill } from "react-icons/ri";
 import { CiLogin } from "react-icons/ci";
-import dynamic from "next/dynamic";
 import LoadingSpinner from "./loading-spinner";
 
 const LogIn = () => (
@@ -35,7 +31,6 @@ const LogOut = ({ logout }: { logout: () => void }) => (
 
 export default function AuthButtons() {
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
   const auth = useAuth();
   const currentUser = auth?.currentUser;
 
@@ -44,19 +39,8 @@ export default function AuthButtons() {
       setLoading(true);
     } else {
       setLoading(false);
-      if (currentUser) {
-        dispatch(
-          addUser({
-            name: currentUser?.displayName || "",
-            email: currentUser?.email ?? "",
-            image: currentUser?.photoURL || "/assets/images/avatar.png",
-          })
-        );
-      } else {
-        dispatch(deleteUser());
-      }
     }
-  }, [currentUser, dispatch]);
+  }, [currentUser]);
 
   const username = currentUser?.displayName || "Profile";
 
@@ -85,10 +69,7 @@ export default function AuthButtons() {
 
   return currentUser ? (
     <div className="flex items-center gap-4">
-      <Link href="/my-favourites" className="relative">
-        <RiHeart2Fill className="text-3xl text-lightText hover:text-hoverBg duration-300 hover:scale-110 transition-transform cursor-pointer" />
-      </Link>
-
+      
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
@@ -103,19 +84,15 @@ export default function AuthButtons() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {auth.customClaims?.admin ? (
+          {(auth.customClaims?.admin as boolean) && (
             <DropdownMenuItem asChild>
-              <Link href="/admin">
-                Admin Dashboard
-              </Link>
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem asChild>
-              <Link href="/account">
-                Account
-              </Link>
+              <Link href="/admin">Admin Panel</Link>
             </DropdownMenuItem>
           )}
+          <DropdownMenuItem asChild>
+            <Link href="/account">My Account</Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <LogOut logout={auth?.logout} />
           </DropdownMenuItem>

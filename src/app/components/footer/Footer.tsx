@@ -21,6 +21,7 @@ const fadeVariants = {
 export default function Footer() {
 
   const whatsappLink = "https://wa.me/393497068208?text=Salve%20Allora!";
+  const emailLink = "mailto:alloraristorante2021@gmail.com";
 
   return (
     <motion.div
@@ -55,7 +56,7 @@ export default function Footer() {
           {/* Make the phone number clickable for WhatsApp */}
           <p className="text-lg md:text-xl">
             <a
-              href={whatsappLink}
+              href={emailLink}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline"
@@ -78,7 +79,7 @@ export default function Footer() {
           <div className="flex items-center gap-x-4">
             {/* Facebook */}
             <a
-              href=""
+              href="https://www.facebook.com/share/1BjmDh3qXa/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -87,7 +88,7 @@ export default function Footer() {
 
             {/* Instagram */}
             <a
-              href=""
+              href="https://www.instagram.com/alloraris?igsh=OThjYXh5dnpoMTVp"
               target="_blank"
               rel="noopener noreferrer"
             >
