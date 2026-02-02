@@ -35,7 +35,7 @@
     "lodash": "^4.17.21",
     "lodash.isequal": "^4.5.0",
     "lucide-react": "^0.471.2",
-    "next": "^15.5.3",
+    "next": "15.5.9",
     "next-auth": "^4.24.7",
     "numeral": "^2.0.6",
     "react": "^19.1.1",
