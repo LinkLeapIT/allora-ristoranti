@@ -7,7 +7,16 @@ if (!process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
 }
 
 // Parse the service account key from the environment variable
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+let serviceAccount;
+try {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+} catch (e) {
+  try {
+    serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8'));
+  } catch (e) {
+    throw new Error('Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY. Make sure it is a valid JSON or base64 encoded JSON.');
+  }
+}
 
 // Initialize Firebase Admin SDK if it hasn't been already
 if (!getApps().length) {
