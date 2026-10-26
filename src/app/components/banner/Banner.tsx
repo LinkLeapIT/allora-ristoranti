@@ -1,162 +1,64 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { motion, AnimatePresence } from "framer-motion";
-import { BannerData } from "./BannerData";
 import Link from "next/link";
+import { BannerData } from "./BannerData";
+import { useI18n } from "@/i18n/I18nProvider";
+import { PAGES } from "@/i18n/pages";
 
-// The heading we want to animate letter by letter
-const headingText = "Allora Ristorante";
+const ROTATE_MS = 6000;
 
-// Split text into an array of letters
-const letters = headingText.split("");
-
-// Container variants for stagger effect
-const containerVariants = {
-  hidden: {
-    opacity: 1,
-  },
-  show: {
-    opacity: 1,
-    transition: {
-      // Each letter will appear one after the other
-      staggerChildren: 0.08, // adjust to speed up/slow down
-    },
-  },
-};
-
-// Child variants for each letter
-const letterVariants = {
-  hidden: { opacity: 0, y: "100%" },
-  show: {
-    opacity: 1,
-    y: "0%",
-    transition: {
-      duration: 0.1,
-      ease: "easeOut",
-    },
-  },
-};
-
+// Home hero: photos cross-fade behind the brand name, tagline and two actions.
 const Banner: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const slideLength = BannerData.length;
-  const autoScroll = true;
-  const intervalTime = 5000;
-  const slideInterval = useRef<NodeJS.Timeout | null>(null);
-
-  // Wrap nextSlide in useCallback, so it is stable across renders.
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === slideLength - 1 ? 0 : prev + 1));
-  }, [slideLength]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === 0 ? slideLength - 1 : prev - 1));
-  }, [slideLength]);
-
-  // Also wrap "auto" in useCallback, so we can include it in effect deps.
-  const auto = useCallback(() => {
-    slideInterval.current = setInterval(nextSlide, intervalTime);
-  }, [nextSlide, intervalTime]);
+  const { t, locale } = useI18n();
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    setCurrentSlide(0); // set initial slide to 0 on mount
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setCurrent((i) => (i + 1) % BannerData.length), ROTATE_MS);
+    return () => clearInterval(id);
   }, []);
 
-  useEffect(() => {
-    if (autoScroll) {
-      auto(); // start auto-scroll
-    }
-    // Cleanup on unmount or re-run
-    return () => {
-      if (slideInterval.current) clearInterval(slideInterval.current);
-    };
-    // Now we include `auto` and `autoScroll` in the dependency array
-  }, [auto, autoScroll]);
-
   return (
-    <div className="relative w-screen mx-auto h-[40vh] md:h-[85vh] overflow-hidden flex items-center justify-center">
-      {/* Previous Arrow */}
-      <div
-        onClick={prevSlide}
-        className="hidden md:flex absolute left-4 md:left-8 z-20 cursor-pointer text-3xl text-white/80 hover:text-white transition-colors duration-300"
-        aria-label="Previous Slide"
-      >
-        <IoIosArrowBack size={35} />
-      </div>
+    <section className="relative isolate flex min-h-[72svh] items-center justify-center overflow-hidden md:min-h-[85vh]">
+      {BannerData.map((slide, index) => (
+        <Image
+          key={index}
+          src={slide.image}
+          alt=""
+          fill
+          sizes="100vw"
+          priority={index === 0}
+          className={`-z-20 object-cover transition-opacity duration-1000 motion-reduce:transition-none ${
+            index === current ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
+      <div className="absolute inset-0 -z-10 bg-black/50" aria-hidden="true" />
 
-      {/* Next Arrow */}
-      <div
-        onClick={nextSlide}
-        className="hidden md:flex absolute right-4 md:right-8 z-20 cursor-pointer text-3xl text-white/80 hover:text-white transition-colors duration-300"
-        aria-label="Next Slide"
-      >
-        <IoIosArrowForward size={35} />
-      </div>
+      <div className="px-4 py-16 text-center text-white">
+        <h1 className="font-heading text-6xl font-semibold leading-none md:text-8xl lg:text-9xl">
+          Allora Ristorante
+        </h1>
+        <p className="mt-4 text-xl text-white/90 md:text-3xl">{t.menu.subtitle}</p>
 
-      {/* Slides */}
-      <AnimatePresence mode="wait">
-        {BannerData.map((slide, index) =>
-          index === currentSlide ? (
-            <motion.div
-              key={index}
-              className="absolute top-0 left-0 w-full h-full"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Image
-                src={slide.image}
-                alt={`slide-${index}`}
-                fill
-                className="object-cover"
-                priority={index === 0}
-              />
-            </motion.div>
-          ) : null
-        )}
-      </AnimatePresence>
-
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="flex flex-col items-center justify-center z-10">
-        {/* The animated heading container */}
-        <motion.div
-            className="relative text-4xl md:text-7xl lg:text-9xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-lightText to-lightBg flex"
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-        >
-            {letters.map((letter, index) => (
-            <motion.span
-                key={index}
-                variants={letterVariants}
-                className="inline-block"
-            >
-                {letter === " " ? "\u00A0" : letter}
-            </motion.span>
-            ))}
-        </motion.div>
-        <h2 className="text-2xl md:text-5xl lg:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-lightText to-lightBg flex">Cucina siriana - libanese</h2>
-        <div className="flex space-x-4 mt-4">
-          <button className="px-3 md:px-6 py-1 md:py-2 rounded-lg md:bg-white/60 hover:bg-white/80 transition-colors duration-300 text-white/80 md:text-darkText">
-            <Link href="/menu" className="transition-colors duration-300">
-              Menu
-            </Link>
-          </button>
-          <button className="px-3 md:px-6 py-1 md:py-2 rounded-lg md:bg-white/60 hover:bg-white/80 transition-colors duration-300 text-white/80 md:text-darkText">
-            <Link href="#about-us" className="transition-colors duration-300">
-              Scopri di più
-            </Link>
-          </button>
+        <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <Link
+            href="/menu"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-lightText px-8 text-base font-medium text-white transition-colors hover:bg-lightText/90"
+          >
+            {t.nav.menu}
+          </Link>
+          <Link
+            href="#about-us"
+            className="inline-flex h-12 items-center justify-center rounded-full border border-white/70 px-8 text-base font-medium text-white transition-colors hover:bg-white/10"
+          >
+            {PAGES[locale].home.learnMore}
+          </Link>
         </div>
       </div>
-
-      {/* Bottom Gradient Overlay */}
-      <div className="pointer-events-none absolute bottom-0 left-0 w-full h-44 bg-gradient-to-t from-black/50 to-transparent z-10" />
-    </div>
+    </section>
   );
 };
 
