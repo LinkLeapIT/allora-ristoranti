@@ -43,7 +43,7 @@ export default function WhatWeOffer() {
 
       <div className="flex flex-col items-center justify-center w-full lg:h-screen bg-white bg-opacity-50">
         <h1
-            className="mt-4 text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-darkText to-lightText md:text-5xl"
+            className="mt-4 text-3xl font-extrabold md:text-5xl text-darkText"
         >
             Cosa Offriamo
         </h1>
@@ -71,7 +71,7 @@ export default function WhatWeOffer() {
               // loading="lazy"
               className="w-full h-auto"
             />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-darkText to-lightText md:text-3xl">
+            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
               Ristorante
             </h2>
             <p className="p-1 text-xl text-center md:text-2xl">
@@ -98,7 +98,7 @@ export default function WhatWeOffer() {
               height={600}
               className="w-full h-auto"
             />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-darkText to-lightText md:text-3xl">
+            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
               Cucina siriana e libanese
             </h2>
             <p className="p-1 text-xl text-center md:text-2xl">
@@ -125,7 +125,7 @@ export default function WhatWeOffer() {
               height={600}
               className="w-full h-auto"
             />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-darkText to-lightText md:text-3xl">
+            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
               Consegne a domicilio
             </h2>
             <p className="p-1 text-xl text-center md:text-2xl">
@@ -152,7 +152,7 @@ export default function WhatWeOffer() {
               height={600}
               className="w-full h-auto"
             />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-darkText to-lightText md:text-3xl">
+            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
               Serate di musica cibo e libri
             </h2>
             <p className="p-1 text-xl text-center md:text-2xl">

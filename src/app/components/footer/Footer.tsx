@@ -111,7 +111,7 @@ export default function Footer() {
           variants={fadeVariants}
           className="flex flex-col items-center justify-between gap-y-4"
         >
-          <h2 className="bg-gradient-to-r from-darkText to-lightText bg-clip-text text-2xl font-extrabold text-transparent md:text-4xl">
+          <h2 className="text-2xl font-extrabold md:text-4xl text-darkText">
             Indirizzo
           </h2>
           <ul className="mt-2 flex flex-col gap-y-2 text-sm font-light">
@@ -135,7 +135,7 @@ export default function Footer() {
           variants={fadeVariants}
           className="flex flex-col items-center justify-between gap-y-4"
         >
-          <h2 className="bg-gradient-to-r from-darkText to-lightText bg-clip-text text-2xl font-extrabold text-transparent md:text-4xl">
+          <h2 className="text-2xl font-extrabold md:text-4xl text-darkText">
             Orari
           </h2>
           <ul className="mt-2 flex flex-col gap-y-2 text-sm font-light">
@@ -175,7 +175,7 @@ export default function Footer() {
           variants={fadeVariants}
           className="flex flex-col items-center justify-between gap-y-4"
         >
-          <h2 className="bg-gradient-to-r from-darkText to-lightText bg-clip-text text-2xl font-extrabold text-transparent md:text-4xl">
+          <h2 className="text-2xl font-extrabold md:text-4xl text-darkText">
             Links
           </h2>
           <ul className="flex flex-col items-center justify-between gap-4 text-lg md:text-xl">

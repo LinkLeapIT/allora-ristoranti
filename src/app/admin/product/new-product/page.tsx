@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent, useTransition, useEffect } from 'react';
 import { createProduct } from '@/app/actions/productActions';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import TranslationFields from '@/components/TranslationFields';
 
 const PRODUCT_STATUS = ['available', 'unavailable', 'hidden'] as const;
 
@@ -117,6 +118,9 @@ export default function NewProductPage() {
           </div>
         </div>
         <div className='space-y-6'>
+          <div className='bg-white p-6 rounded-lg shadow-md'>
+            <TranslationFields />
+          </div>
           <div className='bg-white p-6 rounded-lg shadow-md'>
             <label htmlFor='price' className='block text-lg font-semibold mb-2'>Price</label>
             <input type='number' step='0.01' min='0' name='price' id='price' className='w-full border border-gray-300 rounded-md px-4 py-2' placeholder='0.00' required />

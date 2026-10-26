@@ -162,7 +162,7 @@ export default function Ristorante() {
           >
             {/* Section 1 */}
             <div className="space-y-4 bg-white/80 p-4 rounded-lg text-justify shadow-[0px_0px_10px_#967d48]">
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-darkText to-lightText">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-darkText">
                 Tradizioni Mediterranee
               </h3>
               <p>
@@ -188,7 +188,7 @@ export default function Ristorante() {
 
             {/* Section 2 */}
             <div className="space-y-4 bg-white/80 p-4 rounded-lg text-justify shadow-[0px_0px_10px_#967d48]">
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-darkText to-lightText">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-darkText">
                 Condivisione e Armomia
               </h3>
               <p>

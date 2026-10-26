@@ -79,7 +79,7 @@ export default function WhoWeAre() {
             >
                 {/* Heading */}
                 <h2
-                    className="text-2xl md:text-4xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-darkText to-lightText flex"
+                    className="text-2xl md:text-4xl lg:text-6xl font-extrabold flex text-darkText"
                 >
                     CHI SIAMO
                 </h2>

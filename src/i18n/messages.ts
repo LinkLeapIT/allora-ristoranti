@@ -1,0 +1,122 @@
+import type { Locale } from "./config";
+
+const it = {
+  nav: {
+    home: "Home",
+    about: "Chi Siamo",
+    services: "Servizi",
+    contact: "Contatti",
+    callNow: "Chiama-Ora!",
+    language: "Lingua",
+  },
+  menu: {
+    title: "Il nostro menu",
+    all: "Tutti",
+    sortBy: "Ordina per",
+    priceAsc: "Prezzo: dal più basso",
+    priceDesc: "Prezzo: dal più alto",
+    newest: "Più recenti",
+    searchPlaceholder: "Cerca nel menu...",
+    empty: "Nessun piatto disponibile",
+    loadError: "Impossibile caricare il menu. Riprova tra poco.",
+    allergens: "Allergeni",
+    allergyInfo: "Informazioni sugli allergeni",
+    soldOut: "Esaurito",
+    status: { available: "Disponibile", unavailable: "Esaurito", hidden: "Nascosto" },
+    ratingsAndReviews: "Valutazioni e recensioni",
+    leaveReview: "Lascia una recensione",
+    customerReviews: "Recensioni dei clienti",
+    reviews: "recensioni",
+  },
+  admin: { name: "Nome", description: "Descrizione", translationsHint: "Lascia vuoto per usare il testo predefinito." },
+  categories: {
+    "mezzah-fredda": "Mezzah fredda",
+    "mezzah-calda": "Mezzah calda",
+    arayes: "Arayes",
+    pasti: "Pasti",
+    dolci: "Dolci",
+    "main-course": "Secondi",
+  } as Record<string, string>,
+};
+
+export type Messages = typeof it;
+
+const en: Messages = {
+  nav: {
+    home: "Home",
+    about: "About us",
+    services: "Services",
+    contact: "Contact",
+    callNow: "Call now!",
+    language: "Language",
+  },
+  menu: {
+    title: "Our menu",
+    all: "All",
+    sortBy: "Sort by",
+    priceAsc: "Price: low to high",
+    priceDesc: "Price: high to low",
+    newest: "Newest",
+    searchPlaceholder: "Search the menu...",
+    empty: "No dishes available",
+    loadError: "Couldn't load the menu. Try again in a moment.",
+    allergens: "Allergens",
+    allergyInfo: "Allergy information",
+    soldOut: "Sold out",
+    status: { available: "Available", unavailable: "Sold out", hidden: "Hidden" },
+    ratingsAndReviews: "Ratings and reviews",
+    leaveReview: "Leave a review",
+    customerReviews: "Customer reviews",
+    reviews: "reviews",
+  },
+  admin: { name: "Name", description: "Description", translationsHint: "Leave empty to use the default text." },
+  categories: {
+    "mezzah-fredda": "Cold mezze",
+    "mezzah-calda": "Hot mezze",
+    arayes: "Arayes",
+    pasti: "Mains",
+    dolci: "Desserts",
+    "main-course": "Mains",
+  },
+};
+
+const ar: Messages = {
+  nav: {
+    home: "الرئيسية",
+    about: "من نحن",
+    services: "خدماتنا",
+    contact: "اتصل بنا",
+    callNow: "اتصل الآن!",
+    language: "اللغة",
+  },
+  menu: {
+    title: "قائمتنا",
+    all: "الكل",
+    sortBy: "ترتيب حسب",
+    priceAsc: "السعر: من الأقل",
+    priceDesc: "السعر: من الأعلى",
+    newest: "الأحدث",
+    searchPlaceholder: "ابحث في القائمة...",
+    empty: "لا توجد أطباق متاحة",
+    loadError: "تعذّر تحميل القائمة. حاول مرة أخرى بعد قليل.",
+    allergens: "مسببات الحساسية",
+    allergyInfo: "معلومات الحساسية",
+    soldOut: "نفد",
+    status: { available: "متوفر", unavailable: "نفد", hidden: "مخفي" },
+    ratingsAndReviews: "التقييمات والمراجعات",
+    leaveReview: "اترك مراجعة",
+    customerReviews: "مراجعات العملاء",
+    reviews: "مراجعات",
+  },
+  admin: { name: "الاسم", description: "الوصف", translationsHint: "اتركه فارغًا لاستخدام النص الافتراضي." },
+  categories: {
+    "mezzah-fredda": "مازة باردة",
+    "mezzah-calda": "مازة ساخنة",
+    arayes: "عرايس",
+    pasti: "الأطباق الرئيسية",
+    dolci: "الحلويات",
+    "main-course": "الأطباق الرئيسية",
+  },
+};
+
+export const MESSAGES: Record<Locale, Messages> = { it, en, ar };

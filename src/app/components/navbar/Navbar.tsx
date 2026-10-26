@@ -8,8 +8,11 @@ import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import AuthButtons from '@/components/auth-button';
 import { Loader2 } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useI18n } from '@/i18n/I18nProvider';
 
 const Navbar = () => {
+  const { t } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -23,16 +26,16 @@ const Navbar = () => {
 
   const navItems = useMemo(
     () => [
-      { href: '/', label: 'Home' },
-      { href: '/pages/who-we-are', label: 'Chi Siamo' },
-      { href: '/pages/services', label: 'Servizi' },
-      { href: '/pages/contact_us', label: 'Contatti' },
+      { href: '/', label: t.nav.home },
+      { href: '/pages/who-we-are', label: t.nav.about },
+      { href: '/pages/services', label: t.nav.services },
+      { href: '/pages/contact_us', label: t.nav.contact },
       {
         href: 'https://wa.me/393497068208?text=Salve%20Allora!',
-        label: 'Chiama-Ora!',
+        label: t.nav.callNow,
       },
     ],
-    []
+    [t]
   );
 
   return (
@@ -79,22 +82,7 @@ const Navbar = () => {
                     href={href}
                     target="_blank" // open in new tab
                     rel="noopener noreferrer" // security & performance
-                    className="
-                        tracking-widest 
-                        leading-6 
-                        text-text 
-                        text-[12px] 
-                        xl:text-[16px] 
-                        font-extrabold 
-                        hover:scale-110 
-                        hover:text-lightText 
-                        transition-transform 
-                        bg-gradient-to-r 
-                        from-darkText 
-                        to-lightText 
-                        bg-clip-text 
-                        text-transparent
-                    "
+                    className="tracking-widest rtl:tracking-normal leading-6 text-text text-[12px] xl:text-[16px] font-extrabold hover:scale-110 hover:text-lightText transition-transform text-darkText"
                   >
                     {label}
                   </a>
@@ -104,22 +92,7 @@ const Navbar = () => {
                   <Link
                     key={href}
                     href={href}
-                    className="
-                      tracking-widest 
-                      leading-6 
-                      text-text 
-                      text-[12px] 
-                      xl:text-[16px] 
-                      font-extrabold 
-                      hover:scale-110 
-                      hover:text-lightText 
-                      transition-transform 
-                      bg-gradient-to-r 
-                      from-darkText 
-                      to-lightText 
-                      bg-clip-text 
-                      text-transparent
-                  "
+                    className="tracking-widest rtl:tracking-normal leading-6 text-text text-[12px] xl:text-[16px] font-extrabold hover:scale-110 hover:text-lightText transition-transform text-darkText"
                   >
                     {label}
                   </Link>
@@ -130,11 +103,12 @@ const Navbar = () => {
 
           <div className="flex flex-1 justify-end items-center gap-4">
             {/** Services start here */}
-            <Link href="/menu">
+            <Link href="/menu" className="hidden sm:block">
               <MdMenuBook className="text-3xl text-lightText hover:text-hoverBg duration-300 hover:scale-110 transition-transform" />
             </Link>
             {/** Services End here */}
 
+            <LanguageSwitcher />
             <Suspense fallback={<Loader2 className="animate-spin" />}>
               <AuthButtons />
             </Suspense>
@@ -191,21 +165,7 @@ const Navbar = () => {
                         href={href}
                         target="_blank" // open in new tab
                         rel="noopener noreferrer" // security & performance
-                        className="
-                                        tracking-widest 
-                                        leading-6  
-                                        text-3xl 
-                                        font-extrabold 
-                                        hover:scale-110 
-                                        hover:text-lightText 
-                                        transition-transform 
-                                        bg-gradient-to-r 
-                                        from-darkText 
-                                        to-lightText 
-                                        bg-clip-text 
-                                        text-transparent
-                                        p-4
-                                    "
+                        className="tracking-widest rtl:tracking-normal leading-6 text-3xl font-extrabold hover:scale-110 hover:text-lightText transition-transform p-4 text-darkText"
                       >
                         {label}
                       </a>
@@ -216,21 +176,7 @@ const Navbar = () => {
                         key={href}
                         onClick={() => setMobileMenuOpen(false)}
                         href={href}
-                        className="
-                                        tracking-widest 
-                                        leading-6 
-                                        text-3xl
-                                        font-extrabold 
-                                        hover:scale-110 
-                                        hover:text-lightText 
-                                        transition-transform 
-                                        bg-gradient-to-r 
-                                        from-darkText 
-                                        to-lightText 
-                                        bg-clip-text 
-                                        text-transparent
-                                        p-4
-                                    "
+                        className="tracking-widest rtl:tracking-normal leading-6 text-3xl font-extrabold hover:scale-110 hover:text-lightText transition-transform p-4 text-darkText"
                       >
                         {label}
                       </Link>

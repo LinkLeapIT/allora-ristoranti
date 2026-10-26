@@ -162,7 +162,7 @@ export default function Evenings() {
           >
             {/* Section 1 */}
             <div className="space-y-4 bg-white/80 p-4 rounded-lg md:text-justify shadow-[0px_0px_10px_#967d48]">
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-darkText to-lightText">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-darkText">
                 La tradizione mediorientale vede da sempre il momento del pasto come una gioia e un&apos;occasione per incontrarsi.
               </h3>
               <p>

@@ -12,6 +12,27 @@ const createSlug = (text: string) => slugify(text, { lower: true, strict: true }
 
 const productsDir = join(process.cwd(), 'src', 'content', 'products');
 
+const LOCALE_KEYS = ['it', 'en', 'ar'] as const;
+
+// Keeps only known languages and string fields from client-supplied JSON
+function parseTranslations(raw?: string) {
+  if (!raw) return {};
+  let parsed: any;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return {};
+  }
+  const out: Record<string, { title: string; description: string }> = {};
+  for (const key of LOCALE_KEYS) {
+    const entry = parsed?.[key];
+    const title = typeof entry?.title === 'string' ? entry.title.trim() : '';
+    const description = typeof entry?.description === 'string' ? entry.description.trim() : '';
+    if (title || description) out[key] = { title, description };
+  }
+  return out;
+}
+
 export async function getProducts(): Promise<Products[]> {
   const productFiles = await readdir(productsDir);
 
@@ -34,6 +55,9 @@ export async function getProducts(): Promise<Products[]> {
         slug,
         allergy: data.allergy || [],
         status: data.status || '',
+        translations: data.translations || {},
+        createdAt: data.createdAt || '',
+        sortOrder: data.sortOrder,
       } as Products;
     })
   );
@@ -59,6 +83,8 @@ export async function getProduct(slug: string): Promise<Products | null> {
       slug,
       allergy: data.allergy || [],
       status: data.status || '',
+      translations: data.translations || {},
+      createdAt: data.createdAt || '',
     } as Products;
   } catch (error) {
     return null;
@@ -98,21 +124,18 @@ export async function createProduct(formData: FormData) {
     const allergyStr = formData.get('allergy')?.toString() || '';
     const allergy = allergyStr ? allergyStr.split(',').map(item => item.trim()).filter(Boolean) : [];
 
-    const mdxContent = `---
-title: '${title}'
-description: '${description}'
-price: ${price}
-category: '${category}'
-status: '${status}'
-images:
-${imagePaths.map(path => `  - ${path}`).join('\n')}
-allergy:
-${allergy.map(option => `  - ${option}`).join('\n')}
-createdAt: '${new Date().toISOString()}'
----
-
-${description}
-`;
+    const translations = parseTranslations(formData.get('translationsJSON')?.toString());
+    const mdxContent = matter.stringify(`${description}\n`, {
+      title,
+      description,
+      price,
+      category,
+      status,
+      images: imagePaths,
+      allergy,
+      translations,
+      createdAt: new Date().toISOString(),
+    });
 
     const mdxFilePath = join(process.cwd(), 'src', 'content', 'products', `${productSlug}.mdx`);
     await writeFile(mdxFilePath, mdxContent);
@@ -165,21 +188,21 @@ export async function updateProduct(slug: string, formData: FormData) {
     const allergyStr = formData.get('allergy')?.toString() || '';
     const allergy = allergyStr ? allergyStr.split(',').map(item => item.trim()).filter(Boolean) : product.allergy;
 
-    const mdxContent = `---
-title: '${title}'
-description: '${description}'
-price: ${price}
-category: '${category}'
-status: '${status}'
-images:
-${allImages.map(path => `  - ${path}`).join('\n')}
-allergy:
-${allergy.map(option => `  - ${option}`).join('\n')}
-updatedAt: '${new Date().toISOString()}'
----
-
-${description}
-`;
+    const existingFile = await readFile(join(productsDir, `${slug}.mdx`), 'utf-8');
+    const stored = matter(existingFile).data;
+    const submittedTranslations = formData.get('translationsJSON')?.toString();
+    const mdxContent = matter.stringify(`${description}\n`, {
+      ...stored,
+      title,
+      description,
+      price,
+      category,
+      status,
+      images: allImages,
+      allergy,
+      translations: submittedTranslations ? parseTranslations(submittedTranslations) : stored.translations ?? {},
+      updatedAt: new Date().toISOString(),
+    });
 
     const newMdxFilePath = join(process.cwd(), 'src', 'content', 'products', `${productSlug}.mdx`);
     if (slug !== productSlug) {

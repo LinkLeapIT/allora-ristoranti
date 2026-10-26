@@ -12,7 +12,10 @@ const config: Config = {
   			container: '1400px',
   			contentContainer: '1200px'
   		},
-  		fontFamily: {},
+  		fontFamily: {
+  			bodyFont: ['var(--font-body)', 'var(--font-arabic)', ...defaultTheme.fontFamily.sans],
+  			heading: ['var(--font-heading)', 'var(--font-arabic)', 'Georgia', 'serif']
+  		},
   		screens: {
   			xs: '320px',
   			sm: '375px',
@@ -25,12 +28,13 @@ const config: Config = {
   			'2xl': '1400px'
   		},
   		colors: {
-  			lightText: '#967d48',
-  			darkText: '#3a3a3a',
-  			darkBg: '#f6f6f6',
+  			lightText: '#8a6d3b',
+  			darkText: '#2b2622',
+  			darkBg: '#faf6ee',
   			lightBg: '#ffffff',
   			hoverBg: '#acacac',
   			link: '#eadbc7',
+  			line: '#e6dccb',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

@@ -8,14 +8,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import PrudectSearch from "../product-search/page";
 import { Products } from "@/types";
 import { getProducts } from "@/app/actions/productActions";
-
-const sortOptions = [
-  { label: "Price: Low to High", value: "price-asc" },
-  { label: "Price: High to Low", value: "price-desc" },
-  { label: "Newest", value: "newest" },
-];
+import { useI18n } from "@/i18n/I18nProvider";
 
 export default function Page() {
+  const { t } = useI18n();
+  const sortOptions = [
+    { label: t.menu.priceAsc, value: "price-asc" },
+    { label: t.menu.priceDesc, value: "price-desc" },
+    { label: t.menu.newest, value: "newest" },
+  ];
+  const categoryLabel = (cat: { id: string; name: string }) => t.categories[cat.id] ?? cat.name;
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [randomSelect, setRandomSelect] = useState("");
@@ -46,7 +48,9 @@ export default function Page() {
         const response = await fetch('/api/categories');
         if (response.ok) {
           const data = await response.json();
-          setCategories(data);
+          const order = ['mezzah-fredda', 'mezzah-calda', 'arayes', 'pasti'];
+          const rank = (id: string) => (order.indexOf(id) === -1 ? order.length : order.indexOf(id));
+          setCategories([...data].sort((a: { id: string }, b: { id: string }) => rank(a.id) - rank(b.id)));
         } else {
           console.error('Failed to fetch categories');
         }
@@ -83,16 +87,19 @@ export default function Page() {
         style={{ backgroundImage: `url(${bgImage.src})` }}
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="font-heading text-4xl md:text-5xl font-semibold text-darkText text-center mb-8">
+            {t.menu.title}
+          </h1>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
             <div className="relative w-full sm:flex-1">
               <input
-                className="w-full h-12 pl-12 rounded-lg border border-lightText focus:outline-none focus:ring-2 focus:ring-lightText bg-white/80 backdrop-blur-sm"
+                className="w-full h-12 ps-12 rounded-lg border border-lightText focus:outline-none focus:ring-2 focus:ring-lightText bg-white/80 backdrop-blur-sm"
                 type="text"
-                placeholder="Search here..."
+                placeholder={t.menu.searchPlaceholder}
                 value={searchTerm}
                 onChange={handleSearch}
               />
-              <span className="absolute top-1/2 left-4 -translate-y-1/2">
+              <span className="absolute top-1/2 start-4 -translate-y-1/2">
                 <CiSearch className="text-gray-500" size={24} />
               </span>
             </div>
@@ -103,7 +110,7 @@ export default function Page() {
                 onChange={handleSortSelect}
                 className="w-full sm:w-auto border border-lightText rounded-lg py-3 px-4 focus:outline-none focus:ring-1 focus:ring-lightText bg-white/80 backdrop-blur-sm h-12"
               >
-                <option value="">Sort by</option>
+                <option value="">{t.menu.sortBy}</option>
                 {sortOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -121,7 +128,7 @@ export default function Page() {
                   : "bg-white/80 text-darkText backdrop-blur-sm"
               }`}
             >
-              All
+              {t.menu.all}
             </button>
             {categories.map((cat) => (
               <button
@@ -133,7 +140,7 @@ export default function Page() {
                     : "bg-white/80 text-darkText backdrop-blur-sm"
                 }`}
               >
-                {cat.name}
+                {categoryLabel(cat)}
               </button>
             ))}
           </div>

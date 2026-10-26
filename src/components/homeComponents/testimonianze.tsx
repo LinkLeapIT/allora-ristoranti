@@ -51,7 +51,7 @@ export default function TestimonianzePage() {
     <main className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-tr from-lightBg via-hoverBg to-lightBg">
       <section className="max-w-4xl w-full px-4 py-8 md:py-16 mx-auto text-center">
         <motion.h1
-          className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-darkText to-lightText  mb-12"
+          className="text-3xl md:text-5xl font-extrabold mb-12 text-darkText"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
@@ -72,7 +72,7 @@ export default function TestimonianzePage() {
             >
               {/* User Name & Location */}
               <div>
-                <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-darkText to-lightText bg-clip-text text-transparent">
+                <h2 className="text-2xl md:text-3xl font-extrabold text-darkText">
                   {currentTestimonial.name}
                 </h2>
               </div>

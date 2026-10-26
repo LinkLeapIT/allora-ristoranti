@@ -3,6 +3,8 @@ import ProductsData from "./ProductsData";
 import Container from "../navbar/Container";
 import { Products } from "@/types";
 import LoadingSpinner from "@/components/loading-spinner";
+import { useI18n } from "@/i18n/I18nProvider";
+import { localizeProduct } from "@/i18n/localize";
 
 type ProductProps = {
   products: Products[];
@@ -23,6 +25,7 @@ export default function Product({
   loading,
   error,
 }: ProductProps) {
+  const { t, locale } = useI18n();
   const filteredProducts = useMemo(() => {
     let temp = [...products].filter((p) => p.status !== 'hidden');
 
@@ -36,14 +39,19 @@ export default function Product({
 
     const lowerSearch = searchTerm.toLowerCase();
     if (lowerSearch) {
-      temp = temp.filter(
-        (p) =>
-          p.title.toLowerCase().includes(lowerSearch) ||
-          p.description.toLowerCase().includes(lowerSearch)
-      );
+      temp = temp.filter((p) => {
+        const l = localizeProduct(p, locale);
+        return (
+          l.title.toLowerCase().includes(lowerSearch) ||
+          l.description.toLowerCase().includes(lowerSearch)
+        );
+      });
     }
 
-    if (sortBy === "price-asc") {
+    if (!sortBy) {
+      // Keep the order of the printed menu; items without a position go last.
+      temp.sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
+    } else if (sortBy === "price-asc") {
       temp.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
     } else if (sortBy === "price-desc") {
       temp.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
@@ -56,7 +64,7 @@ export default function Product({
     }
 
     return temp;
-  }, [products, categoryFilter, searchTerm, sortBy, random]);
+  }, [products, categoryFilter, searchTerm, sortBy, random, locale]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -73,11 +81,9 @@ export default function Product({
           <ProductsData key={item.id} product={item} />
         ))
       ) : (
-        <div className="relative mt-20 flex items-center justify-center">
-          <h1
-            className="text-2xl font-semibold text-center absolute w-screen text-darkText"
-          >
-            No products available
+        <div className="col-span-full mt-20 flex items-center justify-center">
+          <h1 className="text-2xl font-semibold text-center text-darkText">
+            {t.menu.empty}
           </h1>
         </div>
       )}

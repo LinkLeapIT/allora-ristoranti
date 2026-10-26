@@ -4,8 +4,11 @@ import React, { useState, ChangeEvent, useTransition, useEffect } from 'react';
 import { updateProduct } from "@/app/actions/productActions";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import TranslationFields from '@/components/TranslationFields';
+import type { ProductTranslations } from '@/i18n/localize';
 
 interface Product {
+  translations?: ProductTranslations;
   slug: string;
   title: string;
   description: string;
@@ -145,6 +148,8 @@ export default function EditProductForm({ product }: { product: Product }) {
             defaultValue={product.description}
           />
         </div>
+
+        <TranslationFields initial={product.translations} />
 
         <div>
           <label htmlFor='price' className='block font-semibold mb-1'>

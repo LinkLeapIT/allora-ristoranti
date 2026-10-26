@@ -3,9 +3,13 @@ export interface ExtraIngredient {
   price: number;
 }
 
+import type { ProductTranslations } from '@/i18n/localize';
+
 export interface Products {
+  translations?: ProductTranslations;
   ratings?: Rating[];
   createdAt: string;
+  sortOrder?: number;
   updateAt: string;
   id: string;
   title: string;
