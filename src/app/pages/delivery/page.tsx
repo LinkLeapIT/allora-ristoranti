@@ -1,90 +1,37 @@
 "use client";
 
-import { motion } from "framer-motion";
-import bgImage from "../../../../public/assets/images/allora-floor.jpg";
+import React from "react";
+import Link from "next/link";
+import StoryPage from "@/components/StoryPage";
+import { Reveal } from "@/components/motion";
+import heroImage from "../../../../public/assets/images/allora-floor.jpg";
+import image from "../../../../public/assets/images/allora-delivery.jpg";
+import { useI18n } from "@/i18n/I18nProvider";
+import { PAGES } from "@/i18n/pages";
 
-const headingText = "Consegna a domicilio in arrivo";
-const letters = headingText.split("");
+const WHATSAPP = "https://wa.me/393497068208?text=Salve%20Allora!";
 
-// Container variants for stagger effect (hero heading)
-const containerVariants = {
-  hidden: { opacity: 1 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
+export default function Delivery() {
+  const { locale } = useI18n();
+  const c = PAGES[locale].stories.delivery;
 
-// Child variants for each letter (hero heading)
-const letterVariants = {
-  hidden: { opacity: 0, y: "100%" },
-  show: {
-    opacity: 1,
-    y: "0%",
-    transition: {
-      duration: 0.1,
-      ease: "easeOut",
-    },
-  },
-};
-
-export default function Evenings() {
   return (
-    <>
-      {/* HERO SECTION */}
-      <div
-        className="
-          relative
-          w-full
-          mx-auto
-          h-[40vh]
-          md:h-[85vh]
-          overflow-hidden
-          flex
-          items-center
-          justify-center
-          bg-no-repeat
-          bg-cover
-          bg-center
-          md:bg-fixed
-        "
-        style={{
-          backgroundImage: `url(${bgImage.src})`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50" />
-
-        <motion.div
-          className="
-            relative
-            text-2xl
-            md:text-6xl
-            lg:text-8xl
-            font-extrabold
-            bg-clip-text
-            text-transparent
-            bg-gradient-to-r
-            from-lightText
-            to-lightBg
-            flex
-          "
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
+    <StoryPage
+      title={c.title}
+      lead={c.lead}
+      sections={c.sections}
+      heroImage={heroImage}
+      image={image}
+      cta={{ label: c.cta, href: WHATSAPP, external: true }}
+    >
+      <Reveal>
+        <Link
+          href="/menu"
+          className="inline-flex min-h-[44px] items-center font-medium text-lightText hover:underline"
         >
-          {letters.map((letter, index) => (
-            <motion.span
-              key={index}
-              variants={letterVariants}
-              className="inline-block"
-            >
-              {letter === " " ? "\u00A0" : letter}
-            </motion.span>
-          ))}
-        </motion.div>
-      </div>
-    </>
+          {c.menu}
+        </Link>
+      </Reveal>
+    </StoryPage>
   );
 }

@@ -6,6 +6,7 @@ import PageHero from "@/components/PageHero";
 import heroImage from "../../../../public/assets/images/allora-wood.jpg";
 import { useI18n } from "@/i18n/I18nProvider";
 import { PAGES } from "@/i18n/pages";
+import { Reveal } from "@/components/motion";
 
 const EMAIL = "alloraristorante2021@gmail.com";
 const PHONE_DISPLAY = "+39 349 706 8208";
@@ -48,7 +49,7 @@ export default function ContactUs() {
       <div className="mx-auto max-w-contentContainer px-4 py-10 md:py-16 xl:px-0">
         {/* Quick contact */}
         <ul className="grid gap-4 md:grid-cols-3">
-          <li className={cardClass}>
+          <Reveal as="li" className={cardClass}>
             <Phone className={iconClass} aria-hidden="true" />
             <h2 className={headingClass}>{c.phone}</h2>
             <a href={PHONE_TEL} dir="ltr" className="mt-1 block min-h-[44px] pt-2 text-lg text-darkText hover:text-lightText">
@@ -57,15 +58,15 @@ export default function ContactUs() {
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-lightText hover:underline">
               WhatsApp
             </a>
-          </li>
-          <li className={cardClass}>
+          </Reveal>
+          <Reveal as="li" delay={0.1} className={cardClass}>
             <Mail className={iconClass} aria-hidden="true" />
             <h2 className={headingClass}>{c.email}</h2>
             <a href={`mailto:${EMAIL}`} className="mt-1 block min-h-[44px] break-all pt-2 text-lg text-darkText hover:text-lightText">
               {EMAIL}
             </a>
-          </li>
-          <li className={cardClass}>
+          </Reveal>
+          <Reveal as="li" delay={0.2} className={cardClass}>
             <MapPin className={iconClass} aria-hidden="true" />
             <h2 className={headingClass}>{c.address}</h2>
             <a href={MAPS} target="_blank" rel="noopener noreferrer" className="mt-1 block pt-2 text-lg text-darkText hover:text-lightText">
@@ -76,7 +77,7 @@ export default function ContactUs() {
             <a href={MAPS} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-sm font-medium text-lightText hover:underline">
               {c.openMaps}
             </a>
-          </li>
+          </Reveal>
         </ul>
 
         {/* Hours + form */}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import ContinueWithGoogleButton from "@/components/continue-with-google-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,21 +12,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/app/context/auth";
-import { passwordValidation } from "../validation/passwordValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useToast from "./use-toast";
-
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-});
+import { inputClass, primaryButtonClass } from "@/components/auth/AuthShell";
+import { useI18n } from "@/i18n/I18nProvider";
+import { PAGES } from "@/i18n/pages";
 
 export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const { toast } = useToast();
   const auth = useAuth();
+  const { locale } = useI18n();
+  const a = PAGES[locale].auth;
+
+  const formSchema = useMemo(
+    () =>
+      z.object({
+        email: z.string().email({ message: a.emailInvalid }),
+        password: z.string().min(6, { message: a.pwMin }),
+      }),
+    [a]
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,15 +46,12 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      await auth?.loginWithEmail( data.email, data.password);
+      await auth?.loginWithEmail(data.email, data.password);
       onSuccess?.();
     } catch (e: any) {
       toast({
-        title: "Error!",
-        description:
-          e.code === "auth/invalid-credential"
-            ? "Incorrect credentials"
-            : "An error occurred",
+        title: a.errorTitle,
+        description: e.code === "auth/invalid-credential" ? a.badCredentials : a.generic,
         variant: "destructive",
       });
     }
@@ -53,46 +60,61 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <fieldset
-          disabled={form.formState.isSubmitting}
-          className="flex flex-col gap-4"
-        >
+        <fieldset disabled={form.formState.isSubmitting} className="flex flex-col gap-4">
           <FormField
             control={form.control}
             name="email"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} placeholder="Email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    dir="ltr"
+                    autoComplete="email"
+                    placeholder={a.email}
+                    aria-label={a.email}
+                    className={inputClass}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <FormField
             control={form.control}
             name="password"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} placeholder="Password" type="password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    dir="ltr"
+                    autoComplete="current-password"
+                    placeholder={a.password}
+                    aria-label={a.password}
+                    className={inputClass}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <Button type="submit">Login</Button>
-          <div>
-            Forgotten your password?
-            <Link href="/forgot-password" className="pl-2 underline">
-              Reset it here.
+          <Button type="submit" className={primaryButtonClass}>
+            {a.login}
+          </Button>
+          <p className="text-center text-sm text-darkText/70">
+            {a.forgot}{" "}
+            <Link href="/forgot-password" className="font-medium text-lightText underline">
+              {a.resetHere}
             </Link>
+          </p>
+          <div className="flex items-center gap-3 text-sm text-darkText/50" aria-hidden="true">
+            <span className="h-px flex-1 bg-line" />
+            {a.or}
+            <span className="h-px flex-1 bg-line" />
           </div>
-          <div className="text-center pb-5">or</div>
         </fieldset>
       </form>
       <ContinueWithGoogleButton />

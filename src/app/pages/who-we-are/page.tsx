@@ -8,6 +8,7 @@ import heroImage from "../../../../public/assets/images/allora-floor.jpg";
 import bandImage from "../../../../public/assets/images/allora-wall.jpg";
 import { useI18n } from "@/i18n/I18nProvider";
 import { PAGES } from "@/i18n/pages";
+import { GoldRule, Reveal } from "@/components/motion";
 
 export default function WhoWeAre() {
   const { locale, t } = useI18n();
@@ -18,19 +19,22 @@ export default function WhoWeAre() {
       <PageHero title={c.title} image={heroImage} />
 
       <section className="mx-auto max-w-3xl px-4 py-12 text-center md:py-20">
-        <p className="font-heading text-2xl font-medium leading-snug text-darkText md:text-4xl">
-          {c.intro}
-        </p>
+        <Reveal>
+          <GoldRule className="mx-auto mb-6" />
+          <p className="font-heading text-2xl font-medium leading-snug text-darkText md:text-4xl">
+            {c.intro}
+          </p>
+        </Reveal>
       </section>
 
-      <div className="mx-auto max-w-contentContainer px-4 xl:px-0">
+      <Reveal className="mx-auto max-w-contentContainer px-4 xl:px-0">
         <Image
           src={bandImage}
           alt=""
           sizes="(min-width: 1200px) 1200px, 100vw"
           className="aspect-[16/9] w-full rounded-2xl object-cover md:aspect-[21/9]"
         />
-      </div>
+      </Reveal>
 
       <section className="mx-auto max-w-3xl space-y-5 px-4 py-12 text-center md:py-16">
         <p className="text-lg font-medium leading-relaxed text-darkText md:text-2xl">{c.lead}</p>
@@ -38,8 +42,12 @@ export default function WhoWeAre() {
       </section>
 
       <section className="mx-auto grid max-w-contentContainer gap-8 px-4 pb-12 md:grid-cols-2 md:gap-12 md:pb-20 xl:px-0">
-        <p className="text-base leading-relaxed text-darkText/80 md:text-lg">{c.story1}</p>
-        <p className="text-base leading-relaxed text-darkText/80 md:text-lg">{c.story2}</p>
+        <Reveal>
+          <p className="text-base leading-relaxed text-darkText/80 md:text-lg">{c.story1}</p>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <p className="text-base leading-relaxed text-darkText/80 md:text-lg">{c.story2}</p>
+        </Reveal>
       </section>
 
       <section className="border-t border-line bg-white px-4 py-12 text-center">

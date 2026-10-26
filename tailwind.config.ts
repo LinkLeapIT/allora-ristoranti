@@ -76,6 +76,15 @@ const config: Config = {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
+  		keyframes: {
+  			kenburns: {
+  				'0%': { transform: 'scale(1)' },
+  				'100%': { transform: 'scale(1.1)' }
+  			}
+  		},
+  		animation: {
+  			kenburns: 'kenburns 22s ease-in-out infinite alternate'
+  		},
   		backgroundImage: {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'

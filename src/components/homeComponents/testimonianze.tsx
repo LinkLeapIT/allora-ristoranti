@@ -4,6 +4,7 @@ import React from "react";
 import { Quote } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { PAGES } from "@/i18n/pages";
+import { Reveal } from "@/components/motion";
 
 // Guest reviews are shown exactly as written, in Italian, in every language.
 const testimonials = [
@@ -36,9 +37,11 @@ export default function TestimonianzePage() {
 
         {/* Swipeable row on phones, three columns from tablet up */}
         <ul className="-mx-4 flex snap-x scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 scrollbar-hide lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
-          {testimonials.map((item) => (
-            <li
+          {testimonials.map((item, index) => (
+            <Reveal
+              as="li"
               key={item.name}
+              delay={index * 0.1}
               className="flex w-[85%] shrink-0 snap-start flex-col rounded-2xl border border-line bg-darkBg p-6 md:w-[60%] lg:w-auto"
             >
               <Quote className="h-6 w-6 text-lightText/60" aria-hidden="true" />
@@ -48,7 +51,7 @@ export default function TestimonianzePage() {
               <p className="mt-4 font-heading text-xl font-semibold text-darkText" dir="ltr">
                 {item.name}
               </p>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>

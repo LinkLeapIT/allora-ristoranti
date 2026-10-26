@@ -3,6 +3,7 @@ import ProductsData from "./ProductsData";
 import { Products } from "@/types";
 import { useI18n } from "@/i18n/I18nProvider";
 import { localizeProduct } from "@/i18n/localize";
+import { Reveal } from "@/components/motion";
 
 type Category = { id: string; name: string };
 
@@ -119,7 +120,7 @@ export default function Product({
       {sections.map((section) => (
         <section key={section.id} aria-labelledby={`cat-${section.id}`}>
           {section.name && (
-            <div className="mb-4 flex items-baseline gap-3">
+            <Reveal className="mb-4 flex items-baseline gap-3" y={12}>
               <h2
                 id={`cat-${section.id}`}
                 className="font-heading text-3xl font-semibold text-darkText md:text-4xl"
@@ -130,11 +131,13 @@ export default function Product({
                 {section.items.length} {t.menu.dishes}
               </span>
               <span className="h-px flex-1 translate-y-[-4px] bg-line" aria-hidden="true" />
-            </div>
+            </Reveal>
           )}
           <div className={GRID}>
-            {section.items.map((item) => (
-              <ProductsData key={item.id} product={item} />
+            {section.items.map((item, index) => (
+              <Reveal key={item.id} className="h-full" delay={(index % 3) * 0.07} y={16}>
+                <ProductsData product={item} />
+              </Reveal>
             ))}
           </div>
         </section>

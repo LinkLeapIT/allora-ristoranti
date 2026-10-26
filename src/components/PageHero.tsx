@@ -1,5 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import React from "react";
+import { AnimatedTitle } from "@/components/motion";
 
 type PageHeroProps = {
   title: string;
@@ -19,11 +20,11 @@ export default function PageHero({ title, subtitle, image, priority = true, chil
         fill
         sizes="100vw"
         priority={priority}
-        className="-z-20 object-cover"
+        className="-z-20 object-cover motion-safe:animate-kenburns"
       />
       <div className="absolute inset-0 -z-10 bg-black/50" aria-hidden="true" />
       <div className="px-4 py-12 text-center text-white">
-        <h1 className="font-heading text-5xl font-semibold leading-tight md:text-7xl">{title}</h1>
+        <AnimatedTitle text={title} className="font-heading text-5xl font-semibold leading-tight md:text-7xl" />
         {subtitle && (
           <p className="mx-auto mt-3 max-w-xl text-lg text-white/85 md:text-2xl">{subtitle}</p>
         )}

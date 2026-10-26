@@ -6,6 +6,7 @@ import Link from "next/link";
 import { BannerData } from "./BannerData";
 import { useI18n } from "@/i18n/I18nProvider";
 import { PAGES } from "@/i18n/pages";
+import { AnimatedTitle, Reveal } from "@/components/motion";
 
 const ROTATE_MS = 6000;
 
@@ -30,7 +31,7 @@ const Banner: React.FC = () => {
           fill
           sizes="100vw"
           priority={index === 0}
-          className={`-z-20 object-cover transition-opacity duration-1000 motion-reduce:transition-none ${
+          className={`-z-20 object-cover motion-safe:animate-kenburns transition-opacity duration-1000 motion-reduce:transition-none ${
             index === current ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -38,12 +39,15 @@ const Banner: React.FC = () => {
       <div className="absolute inset-0 -z-10 bg-black/50" aria-hidden="true" />
 
       <div className="px-4 py-16 text-center text-white">
-        <h1 className="font-heading text-6xl font-semibold leading-none md:text-8xl lg:text-9xl">
-          Allora Ristorante
-        </h1>
-        <p className="mt-4 text-xl text-white/90 md:text-3xl">{t.menu.subtitle}</p>
+        <AnimatedTitle
+          text="Allora Ristorante"
+          className="font-heading text-6xl font-semibold leading-none md:text-8xl lg:text-9xl"
+        />
+        <Reveal delay={0.6} y={12}>
+          <p className="mt-4 text-xl text-white/90 md:text-3xl">{t.menu.subtitle}</p>
+        </Reveal>
 
-        <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <Reveal delay={0.85} y={12} className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <Link
             href="/menu"
             className="inline-flex h-12 items-center justify-center rounded-full bg-lightText px-8 text-base font-medium text-white transition-colors hover:bg-lightText/90"
@@ -56,7 +60,7 @@ const Banner: React.FC = () => {
           >
             {PAGES[locale].home.learnMore}
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -27,7 +27,7 @@ const ProductsData = ({ product }: ItemProps) => {
   return (
     <Link
       href={`/menu/${product.slug}`}
-      className={`group flex gap-3 rounded-2xl border border-line bg-white p-4 transition-colors hover:border-lightText/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lightText ${
+      className={`group flex h-full gap-3 rounded-2xl border border-line bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-lightText/60 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-lightText ${
         isSoldOut ? "opacity-60" : ""
       }`}
     >

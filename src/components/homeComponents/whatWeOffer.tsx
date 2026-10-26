@@ -11,6 +11,7 @@ import allora_delivery from "../../../public/assets/images/allora-delivery.jpg";
 import allora_live_music from "../../../public/assets/images/allora-live-music.jpg";
 import { useI18n } from "@/i18n/I18nProvider";
 import { PAGES } from "@/i18n/pages";
+import { Reveal } from "@/components/motion";
 
 const CARDS = [
   { key: "ristorante", href: "/pages/ristorante", image: allora_bbq },
@@ -27,17 +28,19 @@ export default function WhatWeOffer({ showTitle = true }: { showTitle?: boolean 
     <section className="bg-darkBg">
       <div className="mx-auto max-w-contentContainer px-4 py-12 md:py-20 xl:px-0">
         {showTitle && (
-          <h2 className="mb-8 text-center font-heading text-4xl font-semibold text-darkText md:mb-12 md:text-5xl">
-            {c.home.offerTitle}
-          </h2>
+          <Reveal className="mb-8 md:mb-12">
+            <h2 className="text-center font-heading text-4xl font-semibold text-darkText md:text-5xl">
+              {c.home.offerTitle}
+            </h2>
+          </Reveal>
         )}
 
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {CARDS.map(({ key, href, image }) => (
-            <li key={key} className="flex">
+          {CARDS.map(({ key, href, image }, index) => (
+            <Reveal as="li" key={key} className="flex" delay={index * 0.1}>
               <Link
                 href={href}
-                className="group flex w-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-colors hover:border-lightText/60"
+                className="group flex w-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all duration-300 hover:-translate-y-1 hover:border-lightText/60 hover:shadow-lg"
               >
                 <Image
                   src={image}
@@ -58,7 +61,7 @@ export default function WhatWeOffer({ showTitle = true }: { showTitle?: boolean 
                   </span>
                 </div>
               </Link>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>
