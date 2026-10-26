@@ -60,7 +60,7 @@ export default function Page() {
     const update = () => setHeaderHeight(header.getBoundingClientRect().height);
     update();
     const observer = new ResizeObserver(update);
-    observer.observe(header);
+    observer.observe(header, { box: "border-box" });
     return () => observer.disconnect();
   }, []);
 
@@ -82,12 +82,8 @@ export default function Page() {
         <p className="mt-1 text-sm text-darkText/60 md:text-base">{t.menu.subtitle}</p>
       </header>
 
-      <div
-        className="sticky z-30 border-b border-line bg-darkBg/95 backdrop-blur"
-        style={{ top: headerHeight }}
-      >
-        <div className="mx-auto max-w-contentContainer px-4 py-3">
-          <div className="mb-3 flex gap-2">
+      <div className="mx-auto max-w-contentContainer px-4 pb-3">
+        <div className="flex gap-2">
             <div className="relative min-w-0 flex-1">
               <Search
                 className="pointer-events-none absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2 text-darkText/40"
@@ -132,7 +128,13 @@ export default function Page() {
               </select>
             </div>
           </div>
+      </div>
 
+      <div
+        className="sticky z-30 border-b border-line bg-darkBg/95 backdrop-blur"
+        style={{ top: headerHeight }}
+      >
+        <div className="mx-auto max-w-contentContainer px-4 py-2">
           <div className="-mx-4 flex snap-x scroll-px-4 gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
             <button
               type="button"
