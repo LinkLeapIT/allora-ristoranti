@@ -31,7 +31,7 @@ const ProductsData = ({ product }: ItemProps) => {
         isSoldOut ? "opacity-60" : ""
       }`}
     >
-      {photo && (
+      {photo ? (
         <Image
           src={photo}
           alt=""
@@ -39,6 +39,13 @@ const ProductsData = ({ product }: ItemProps) => {
           height={76}
           className="h-[76px] w-[76px] shrink-0 rounded-xl object-cover"
         />
+      ) : (
+        <div
+          className="flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-xl bg-darkBg"
+          aria-hidden="true"
+        >
+          <Image src="/assets/images/logo.png" alt="" width={56} height={56} className="h-auto w-12 opacity-60" />
+        </div>
       )}
 
       <div className="min-w-0 flex-1">
