@@ -47,8 +47,8 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
           {t.menu.back}
         </Link>
 
-        <article className={photo ? 'grid gap-6 md:grid-cols-2 md:gap-10' : ''}>
-          {photo && (
+        <article className="grid gap-6 md:grid-cols-2 md:gap-10">
+          {photo ? (
             <Image
               src={photo}
               alt={title}
@@ -57,9 +57,23 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
               priority
               className="aspect-square w-full rounded-2xl border border-line object-cover"
             />
+          ) : (
+            <div
+              className="flex aspect-[16/9] w-full items-center justify-center rounded-2xl border border-line bg-white md:aspect-square"
+              aria-hidden="true"
+            >
+              <Image
+                src="/assets/images/logo.png"
+                alt=""
+                width={160}
+                height={142}
+                priority
+                className="h-auto w-28 opacity-50 md:w-44"
+              />
+            </div>
           )}
 
-          <div className={photo ? 'self-center' : 'rounded-2xl border border-line bg-white p-5 md:p-8'}>
+          <div className="self-center">
             <p className="text-sm font-medium uppercase tracking-wide text-lightText rtl:tracking-normal">
               {categoryName}
             </p>
