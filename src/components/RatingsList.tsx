@@ -1,37 +1,42 @@
+'use client';
+
 import Image from 'next/image';
 import { Rating } from '@/types';
 import StarRating from '@/components/ui/StarRating';
+import { useI18n } from '@/i18n/I18nProvider';
 
 interface RatingsListProps {
   ratings: Rating[];
 }
 
 const RatingsList: React.FC<RatingsListProps> = ({ ratings }) => {
+  const { t } = useI18n();
+
   if (!ratings || ratings.length === 0) {
-    return <p>No reviews yet.</p>;
+    return <p className="text-darkText/60">{t.menu.noReviews}</p>;
   }
 
   return (
-    <div className="space-y-4">
+    <ul className="space-y-3">
       {ratings.map((rating) => (
-        <div key={rating.id} className="p-4 border rounded-lg shadow-sm">
-          <div className="flex items-center mb-2">
-            <Image 
-              src={rating.userImage || '/assets/images/avatar.png'} 
-              alt={rating.userName || 'User'} 
-              className="w-10 h-10 rounded-full mr-4"
-              width={40} 
-              height={40} 
+        <li key={rating.id} className="rounded-xl border border-line p-4">
+          <div className="mb-2 flex items-center gap-3">
+            <Image
+              src={rating.userImage || '/assets/images/avatar.png'}
+              alt=""
+              className="h-10 w-10 rounded-full object-cover"
+              width={40}
+              height={40}
             />
-            <div>
-              <p className="font-bold">{rating.userName}</p>
+            <div className="min-w-0">
+              <p className="truncate font-medium text-darkText">{rating.userName}</p>
               <StarRating rating={rating.rating} />
             </div>
           </div>
-          <p>{rating.comment}</p>
-        </div>
+          {rating.comment && <p className="text-darkText/80">{rating.comment}</p>}
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
