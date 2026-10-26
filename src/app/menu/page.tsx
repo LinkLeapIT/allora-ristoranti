@@ -1,41 +1,37 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { CiSearch } from "react-icons/ci";
+import React, { useEffect, useState } from "react";
+import { Search, ArrowUpDown, X } from "lucide-react";
 import Product from "../components/products/Products";
-import bgImage from "../../../public/assets/images/FrameBackground.jpg";
-import { AnimatePresence, motion } from "framer-motion";
-import PrudectSearch from "../product-search/page";
 import { Products } from "@/types";
 import { getProducts } from "@/app/actions/productActions";
 import { useI18n } from "@/i18n/I18nProvider";
 
+type SortBy = "" | "price-asc" | "price-desc" | "newest";
+type Category = { id: string; name: string };
+
+const CATEGORY_ORDER = ["mezzah-fredda", "mezzah-calda", "arayes", "pasti"];
+const rank = (id: string) => {
+  const i = CATEGORY_ORDER.indexOf(id);
+  return i === -1 ? CATEGORY_ORDER.length : i;
+};
+
 export default function Page() {
   const { t } = useI18n();
-  const sortOptions = [
-    { label: t.menu.priceAsc, value: "price-asc" },
-    { label: t.menu.priceDesc, value: "price-desc" },
-    { label: t.menu.newest, value: "newest" },
-  ];
-  const categoryLabel = (cat: { id: string; name: string }) => t.categories[cat.id] ?? cat.name;
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [randomSelect, setRandomSelect] = useState("");
-  const [sortBy, setSortBy] = useState<
-    "" | "price-asc" | "price-desc" | "newest"
-  >("");
-  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [sortBy, setSortBy] = useState<SortBy>("");
   const [products, setProducts] = useState<Products[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
+  // The site header is sticky and changes height, so the toolbar tracks it.
+  const [headerHeight, setHeaderHeight] = useState(72);
 
   useEffect(() => {
-    const fetchAndSetProducts = async () => {
+    const load = async () => {
       try {
-        setLoading(true);
-        const fetchedProducts = await getProducts();
-        setProducts(fetchedProducts);
+        setProducts(await getProducts());
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -43,152 +39,135 @@ export default function Page() {
       }
     };
 
-    const fetchCategories = async () => {
+    const loadCategories = async () => {
       try {
-        const response = await fetch('/api/categories');
-        if (response.ok) {
-          const data = await response.json();
-          const order = ['mezzah-fredda', 'mezzah-calda', 'arayes', 'pasti'];
-          const rank = (id: string) => (order.indexOf(id) === -1 ? order.length : order.indexOf(id));
-          setCategories([...data].sort((a: { id: string }, b: { id: string }) => rank(a.id) - rank(b.id)));
-        } else {
-          console.error('Failed to fetch categories');
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
+        const response = await fetch("/api/categories");
+        if (!response.ok) return;
+        const data: Category[] = await response.json();
+        setCategories([...data].sort((a, b) => rank(a.id) - rank(b.id)));
+      } catch (err) {
+        console.error("Error fetching categories:", err);
       }
     };
 
-    fetchAndSetProducts();
-    fetchCategories();
+    load();
+    loadCategories();
   }, []);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSearchTerm(e.target.value);
+  useEffect(() => {
+    const header = document.querySelector("header");
+    if (!header) return;
+    const update = () => setHeaderHeight(header.getBoundingClientRect().height);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
 
-  const handleCategorySelect = (category: string) => {
-    setCategoryFilter(category);
-  };
+  const categoryLabel = (cat: Category) => t.categories[cat.id] ?? cat.name;
 
-  const handleSortSelect = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setSortBy(e.target.value as
-      |""
-      | "price-asc"
-      | "price-desc"
-      | "newest");
+  const chipClass = (active: boolean) =>
+    `inline-flex h-10 shrink-0 snap-start items-center rounded-full border px-4 text-sm font-medium transition-colors ${
+      active
+        ? "border-lightText bg-lightText text-white"
+        : "border-line bg-white text-darkText hover:bg-darkBg"
+    }`;
 
   return (
-    <>
-      <main
-        className={`
-          relative w-full mx-auto overflow-hidden flex flex-col items-center
-          bg-no-repeat bg-cover bg-center md:bg-fixed min-h-screen
-        `}
-        style={{ backgroundImage: `url(${bgImage.src})` }}
+    <main className="min-h-screen bg-darkBg">
+      <header className="px-4 pb-4 pt-8 text-center md:pt-12">
+        <h1 className="font-heading text-4xl font-semibold text-darkText md:text-5xl">
+          {t.menu.title}
+        </h1>
+        <p className="mt-1 text-sm text-darkText/60 md:text-base">{t.menu.subtitle}</p>
+      </header>
+
+      <div
+        className="sticky z-30 border-b border-line bg-darkBg/95 backdrop-blur"
+        style={{ top: headerHeight }}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="font-heading text-4xl md:text-5xl font-semibold text-darkText text-center mb-8">
-            {t.menu.title}
-          </h1>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-            <div className="relative w-full sm:flex-1">
-              <input
-                className="w-full h-12 ps-12 rounded-lg border border-lightText focus:outline-none focus:ring-2 focus:ring-lightText bg-white/80 backdrop-blur-sm"
-                type="text"
-                placeholder={t.menu.searchPlaceholder}
-                value={searchTerm}
-                onChange={handleSearch}
+        <div className="mx-auto max-w-contentContainer px-4 py-3">
+          <div className="mb-3 flex gap-2">
+            <div className="relative min-w-0 flex-1">
+              <Search
+                className="pointer-events-none absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2 text-darkText/40"
+                aria-hidden="true"
               />
-              <span className="absolute top-1/2 start-4 -translate-y-1/2">
-                <CiSearch className="text-gray-500" size={24} />
-              </span>
+              <input
+                type="search"
+                inputMode="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder={t.menu.searchPlaceholder}
+                aria-label={t.menu.searchPlaceholder}
+                className="h-11 w-full rounded-xl border border-line bg-white ps-10 pe-10 text-base text-darkText placeholder:text-darkText/40 focus:border-lightText focus:outline-none focus:ring-2 focus:ring-lightText/30"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")}
+                  aria-label={t.menu.clearSearch}
+                  className="absolute end-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-darkText/50 hover:text-darkText"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
 
-            <div className="flex items-center gap-4 w-full sm:w-auto">
+            <div className="relative shrink-0">
+              <ArrowUpDown
+                className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-darkText/50"
+                aria-hidden="true"
+              />
               <select
                 value={sortBy}
-                onChange={handleSortSelect}
-                className="w-full sm:w-auto border border-lightText rounded-lg py-3 px-4 focus:outline-none focus:ring-1 focus:ring-lightText bg-white/80 backdrop-blur-sm h-12"
+                onChange={(e) => setSortBy(e.target.value as SortBy)}
+                aria-label={t.menu.sortBy}
+                className="h-11 w-28 appearance-none rounded-xl border border-line bg-white ps-9 pe-2 text-sm text-darkText focus:border-lightText focus:outline-none focus:ring-2 focus:ring-lightText/30 md:w-44"
               >
                 <option value="">{t.menu.sortBy}</option>
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                <option value="price-asc">{t.menu.priceAsc}</option>
+                <option value="price-desc">{t.menu.priceDesc}</option>
+                <option value="newest">{t.menu.newest}</option>
               </select>
             </div>
           </div>
-          <div className="flex items-center gap-4 mb-12 overflow-x-auto pb-4 scrollbar-hide">
-             <button
-              onClick={() => handleCategorySelect("")}
-              className={`px-4 py-2 rounded-lg font-semibold border transition-all duration-300 whitespace-nowrap ${
-                !categoryFilter
-                  ? "bg-lightText text-white scale-105"
-                  : "bg-white/80 text-darkText backdrop-blur-sm"
-              }`}
+
+          <div className="-mx-4 flex snap-x scroll-px-4 gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
+            <button
+              type="button"
+              onClick={() => setCategoryFilter("")}
+              aria-pressed={!categoryFilter}
+              className={chipClass(!categoryFilter)}
             >
               {t.menu.all}
             </button>
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => handleCategorySelect(cat.id)}
-                className={`px-4 py-2 rounded-lg font-semibold border transition-all duration-300 whitespace-nowrap ${
-                  categoryFilter === cat.id
-                    ? "bg-lightText text-white scale-105"
-                    : "bg-white/80 text-darkText backdrop-blur-sm"
-                }`}
+                type="button"
+                onClick={() => setCategoryFilter(cat.id)}
+                aria-pressed={categoryFilter === cat.id}
+                className={chipClass(categoryFilter === cat.id)}
               >
                 {categoryLabel(cat)}
               </button>
             ))}
           </div>
-
-          <Product
-            products={products}
-            searchTerm={searchTerm}
-            categoryFilter={categoryFilter}
-            sortBy={sortBy}
-            random={randomSelect}
-            loading={loading}
-            error={error}
-          />
         </div>
-      </main>
+      </div>
 
-      <AnimatePresence>
-        {showSearchModal && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-2"
-            onClick={() => setShowSearchModal(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.div
-              className="relative w-full max-w-md bg-white p-4 rounded-lg"
-              onClick={(e) => e.stopPropagation()}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h2 className="text-2l font-bold mb-4">Search your item!</h2>
-              <div>
-                <PrudectSearch />
-              </div>
-              <button
-                className="absolute top-2 right-2 text-xl"
-                onClick={() => setShowSearchModal(false)}
-              >
-                X
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+      <div className="mx-auto max-w-contentContainer px-4 py-6 md:py-10">
+        <Product
+          products={products}
+          categories={categories}
+          searchTerm={searchTerm}
+          categoryFilter={categoryFilter}
+          sortBy={sortBy}
+          loading={loading}
+          error={error}
+        />
+      </div>
+    </main>
   );
 }

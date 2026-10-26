@@ -10,6 +10,10 @@ const it = {
     language: "Lingua",
   },
   menu: {
+    subtitle: "Cucina siriana e libanese",
+    dishes: "piatti",
+    noResults: "Nessun piatto corrisponde alla ricerca",
+    clearSearch: "Cancella ricerca",
     title: "Il nostro menu",
     all: "Tutti",
     sortBy: "Ordina per",
@@ -51,6 +55,10 @@ const en: Messages = {
     language: "Language",
   },
   menu: {
+    subtitle: "Syrian and Lebanese cuisine",
+    dishes: "dishes",
+    noResults: "No dishes match your search",
+    clearSearch: "Clear search",
     title: "Our menu",
     all: "All",
     sortBy: "Sort by",
@@ -90,6 +98,10 @@ const ar: Messages = {
     language: "اللغة",
   },
   menu: {
+    subtitle: "مطبخ سوري ولبناني",
+    dishes: "أطباق",
+    noResults: "لا توجد أطباق مطابقة للبحث",
+    clearSearch: "مسح البحث",
     title: "قائمتنا",
     all: "الكل",
     sortBy: "ترتيب حسب",
