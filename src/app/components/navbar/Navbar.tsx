@@ -1,193 +1,175 @@
 'use client';
-import React, { Suspense, useEffect, useMemo, useState } from 'react';
+
+import React, { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useAuth } from '@/app/context/auth';
-import alloraLogo from '@/../public/assets/images/logo.png';
-import { MdMenuBook } from 'react-icons/md';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
+import { Loader2, Menu, X, MessageCircle } from 'lucide-react';
+import alloraLogo from '@/../public/assets/images/logo.png';
 import AuthButtons from '@/components/auth-button';
-import { Loader2 } from 'lucide-react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useI18n } from '@/i18n/I18nProvider';
 
+const WHATSAPP = 'https://wa.me/393497068208?text=Salve%20Allora!';
+
 const Navbar = () => {
   const { t } = useI18n();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname() ?? '';
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navItems = useMemo(
-    () => [
-      { href: '/', label: t.nav.home },
-      { href: '/pages/who-we-are', label: t.nav.about },
-      { href: '/pages/services', label: t.nav.services },
-      { href: '/pages/contact_us', label: t.nav.contact },
-      {
-        href: 'https://wa.me/393497068208?text=Salve%20Allora!',
-        label: t.nav.callNow,
-      },
-    ],
-    [t]
-  );
+  // Close the drawer after navigating.
+  useEffect(() => setOpen(false), [pathname]);
+
+  // While the drawer is open: lock page scroll and close on Escape.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const links = [
+    { href: '/', label: t.nav.home },
+    { href: '/menu', label: t.nav.menu },
+    { href: '/pages/who-we-are', label: t.nav.about },
+    { href: '/pages/services', label: t.nav.services },
+    { href: '/pages/contact_us', label: t.nav.contact },
+  ];
+
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
-    <header className={`sticky inset-x-0 top-0 z-50 w-full bg-darkBg transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
-      <div className="max-w-[1400px] mx-auto">
-        <nav
-          className="flex items-center justify-between px-4 uppercase"
-          aria-label="Global"
-        >
-          <motion.div 
-            className="flex items-center flex-shrink-0"
-            initial={{ opacity: 1, width: 'auto' }}
-            animate={{ opacity: scrolled ? 0 : 1, width: scrolled ? 0 : 'auto' }}
-            transition={{ duration: 0.3 }}
+    <header
+      className={`sticky inset-x-0 top-0 z-50 w-full border-b border-line bg-darkBg/95 backdrop-blur transition-[padding] duration-300 ${
+        scrolled ? 'py-1.5' : 'py-2 md:py-3'
+      }`}
+    >
+      {open && (
+        <button
+          type="button"
+          aria-label={t.nav.closeMenu}
+          tabIndex={-1}
+          onClick={() => setOpen(false)}
+          className="absolute inset-x-0 top-full -z-10 h-screen bg-black/30 lg:hidden"
+        />
+      )}
+
+      <nav
+        className="mx-auto flex max-w-[1400px] items-center gap-3 px-4"
+        aria-label="Global"
+      >
+        <Link href="/" className="shrink-0" aria-label="Allora Ristorante">
+          <Image
+            src={alloraLogo}
+            alt=""
+            width={96}
+            height={85}
+            className={`h-auto transition-all duration-300 ${
+              scrolled ? 'w-9 md:w-11' : 'w-11 md:w-14'
+            }`}
+            priority
+          />
+        </Link>
+
+        {/* Desktop links */}
+        <ul className="hidden flex-1 items-center justify-center gap-1 lg:flex xl:gap-3">
+          {links.map(({ href, label }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                aria-current={isActive(href) ? 'page' : undefined}
+                className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors xl:text-base ${
+                  isActive(href)
+                    ? 'text-lightText'
+                    : 'text-darkText hover:text-lightText'
+                }`}
+              >
+                {label}
+                {isActive(href) && (
+                  <span className="absolute inset-x-4 -bottom-0.5 h-0.5 rounded bg-lightText" />
+                )}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="ms-auto flex items-center gap-2 md:gap-3 lg:ms-0">
+          <LanguageSwitcher />
+          <Suspense fallback={<Loader2 className="h-5 w-5 animate-spin text-lightText" />}>
+            <AuthButtons />
+          </Suspense>
+
+          <a
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden items-center gap-2 rounded-full bg-lightText px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-lightText/90 lg:inline-flex"
           >
-            <Link href="/" className="-m-1.5 p-1.5">
-              <Image
-                src={alloraLogo}
-                alt="Logo"
-                width={96}
-                height={85}
-                className="w-[48px] md:w-[72px] xl:w-[96px]"
-                style={{ height: 'auto' }}
-                priority
-              />
-            </Link>
-          </motion.div>
-
-          <motion.div
-            className="hidden lg:flex flex-grow justify-center lg:gap-x-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            {navItems.map(({ href, label }) => {
-              // 1) Decide if link is external. For example:
-              const isExternal =
-                href.startsWith('http') || href.startsWith('//');
-              // 2) Render <a> for external, <Link> for internal
-              if (isExternal) {
-                return (
-                  <a
-                    key={href}
-                    href={href}
-                    target="_blank" // open in new tab
-                    rel="noopener noreferrer" // security & performance
-                    className="tracking-widest rtl:tracking-normal leading-6 text-text text-[12px] xl:text-[16px] font-extrabold hover:scale-110 hover:text-lightText transition-transform text-darkText"
-                  >
-                    {label}
-                  </a>
-                );
-              } else {
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="tracking-widest rtl:tracking-normal leading-6 text-text text-[12px] xl:text-[16px] font-extrabold hover:scale-110 hover:text-lightText transition-transform text-darkText"
-                  >
-                    {label}
-                  </Link>
-                );
-              }
-            })}
-          </motion.div>
-
-          <div className="flex flex-1 justify-end items-center gap-4">
-            {/** Services start here */}
-            <Link href="/menu" className="hidden sm:block">
-              <MdMenuBook className="text-3xl text-lightText hover:text-hoverBg duration-300 hover:scale-110 transition-transform" />
-            </Link>
-            {/** Services End here */}
-
-            <LanguageSwitcher />
-            <Suspense fallback={<Loader2 className="animate-spin" />}>
-              <AuthButtons />
-            </Suspense>
-          </div>
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            {t.nav.callNow}
+          </a>
 
           <button
             type="button"
-            className="inline-flex items-center text-lightText hover:text-hoverBg duration-300 justify-center p-2 lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-darkText transition-colors hover:bg-white lg:hidden"
           >
-            <svg
-              className={`h-9 w-9 transition-transform ${
-                mobileMenuOpen ? 'rotate-180' : ''
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 6h18M3 12h18m-18 6h18"
-              />
-            </svg>
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-        </nav>
+        </div>
+      </nav>
 
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              className="fixed inset-0 z-50 bg-gradient-to-tr from-darkBg via-lightBg to-darkBg p-6 lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <div className="flex flex-col items-center justify-center">
-                <button
-                  className="self-end mb-4 text-2xl text-darkText hover:text-lightText"
-                  onClick={() => setMobileMenuOpen(false)}
+      {/* Mobile drawer */}
+      {open && (
+        <div
+          id="mobile-menu"
+          className="absolute inset-x-0 top-full max-h-[calc(100dvh-100%)] overflow-y-auto border-b border-line bg-darkBg shadow-lg lg:hidden"
+        >
+          <ul className="mx-auto flex max-w-[1400px] flex-col px-4 py-2">
+            {links.map(({ href, label }) => (
+              <li key={href} className="border-b border-line last:border-0">
+                <Link
+                  href={href}
+                  aria-current={isActive(href) ? 'page' : undefined}
+                  className={`flex min-h-[52px] items-center font-heading text-2xl font-semibold ${
+                    isActive(href) ? 'text-lightText' : 'text-darkText'
+                  }`}
                 >
-                  ✖
-                </button>
-                {navItems.map(({ href, label }) => {
-                  // 1) Decide if link is external. For example:
-                  const isExternal =
-                    href.startsWith('http') || href.startsWith('//');
-                  // 2) Render <a> for external, <Link> for internal
-                  if (isExternal) {
-                    return (
-                      <a
-                        key={href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        href={href}
-                        target="_blank" // open in new tab
-                        rel="noopener noreferrer" // security & performance
-                        className="tracking-widest rtl:tracking-normal leading-6 text-3xl font-extrabold hover:scale-110 hover:text-lightText transition-transform p-4 text-darkText"
-                      >
-                        {label}
-                      </a>
-                    );
-                  } else {
-                    return (
-                      <Link
-                        key={href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        href={href}
-                        className="tracking-widest rtl:tracking-normal leading-6 text-3xl font-extrabold hover:scale-110 hover:text-lightText transition-transform p-4 text-darkText"
-                      >
-                        {label}
-                      </Link>
-                    );
-                  }
-                })}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mx-auto max-w-[1400px] px-4 pb-5 pt-2">
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-lightText text-base font-medium text-white"
+            >
+              <MessageCircle className="h-5 w-5" aria-hidden="true" />
+              {t.nav.callNow}
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

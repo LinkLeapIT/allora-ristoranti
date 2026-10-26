@@ -18,7 +18,7 @@ import { CiLogin } from "react-icons/ci";
 import LoadingSpinner from "./loading-spinner";
 
 const LogIn = () => (
-  <Link href="/login" className="text-3xl text-lightText hover:scale-110 transition-transform hover:text-hoverBg">
+  <Link href="/login" aria-label="Login" className="flex h-11 w-11 items-center justify-center text-3xl text-lightText hover:scale-110 transition-transform hover:text-hoverBg">
     <CiLogin />
   </Link>
 );

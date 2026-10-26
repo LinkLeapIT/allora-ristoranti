@@ -74,7 +74,7 @@ export default function Page() {
     }`;
 
   return (
-    <main className="min-h-screen bg-darkBg">
+    <div className="min-h-screen bg-darkBg">
       <header className="px-4 pb-4 pt-8 text-center md:pt-12">
         <h1 className="font-heading text-4xl font-semibold text-darkText md:text-5xl">
           {t.menu.title}
@@ -100,7 +100,7 @@ export default function Page() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={t.menu.searchPlaceholder}
                 aria-label={t.menu.searchPlaceholder}
-                className="h-11 w-full rounded-xl border border-line bg-white ps-10 pe-10 text-base text-darkText placeholder:text-darkText/40 focus:border-lightText focus:outline-none focus:ring-2 focus:ring-lightText/30"
+                className={`h-11 w-full rounded-xl border border-line bg-white ps-10 ${searchTerm ? "pe-10" : "pe-3"} text-base text-darkText placeholder:text-darkText/40 focus:border-lightText focus:outline-none focus:ring-2 focus:ring-lightText/30`}
               />
               {searchTerm && (
                 <button
@@ -123,7 +123,7 @@ export default function Page() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortBy)}
                 aria-label={t.menu.sortBy}
-                className="h-11 w-28 appearance-none rounded-xl border border-line bg-white ps-9 pe-2 text-sm text-darkText focus:border-lightText focus:outline-none focus:ring-2 focus:ring-lightText/30 md:w-44"
+                className="h-11 w-[7.25rem] appearance-none truncate rounded-xl border border-line bg-white ps-9 pe-2 text-sm text-darkText focus:border-lightText focus:outline-none focus:ring-2 focus:ring-lightText/30 md:w-44"
               >
                 <option value="">{t.menu.sortBy}</option>
                 <option value="price-asc">{t.menu.priceAsc}</option>
@@ -168,6 +168,6 @@ export default function Page() {
           error={error}
         />
       </div>
-    </main>
+    </div>
   );
 }
