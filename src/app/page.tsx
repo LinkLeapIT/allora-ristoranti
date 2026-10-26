@@ -3,13 +3,13 @@ import AboutUsComponent from "@/components/homeComponents/aboutUsComponent";
 import WhatWeOffer from "@/components/homeComponents/whatWeOffer";
 import TestimonianzePage from "@/components/homeComponents/testimonianze";
 
-export default async function Home() {
+export default function Home() {
   return (
-    <main className="overflow-x-hidden">
+    <div className="overflow-x-hidden">
       <Banner />
       <AboutUsComponent />
       <WhatWeOffer />
       <TestimonianzePage />
-    </main>
+    </div>
   );
 }

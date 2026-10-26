@@ -1,104 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
+import React from "react";
+import { Quote } from "lucide-react";
+import { useI18n } from "@/i18n/I18nProvider";
+import { PAGES } from "@/i18n/pages";
 
+// Guest reviews are shown exactly as written, in Italian, in every language.
 const testimonials = [
   {
     name: "Teresa F",
-    testimonial:
-      "Non avevo mai provato la cucina mediorientale. Per un brutto pregiudizio, infatti, pensavo fosse semplicemente cibo affogato nelle spezie e tutto uguale. In un ambiente così rilassante e con la cucina a pochi passi dal nostro posto mi sono resa conto di quanto mi sbagliassi. Ci sono tantissimi gusti da esplorare e tradizioni semplicemente uniche, che da sempre hanno unito i due versanti del Mediterraneo.Un posto consigliatissimo per chi vuol scoprire qualcosa di nuovo.",
+    text: "Non avevo mai provato la cucina mediorientale. Per un brutto pregiudizio, infatti, pensavo fosse semplicemente cibo affogato nelle spezie e tutto uguale. In un ambiente così rilassante e con la cucina a pochi passi dal nostro posto mi sono resa conto di quanto mi sbagliassi. Ci sono tantissimi gusti da esplorare e tradizioni semplicemente uniche, che da sempre hanno unito i due versanti del Mediterraneo. Un posto consigliatissimo per chi vuol scoprire qualcosa di nuovo.",
   },
   {
     name: "Claudio G",
-    testimonial:
-      "Sono venuto qua per la prima volta perché mi ci ha portato un collega che lavora per l'import-export con l'oriente. Ho scoperto un ambiente incredibilmente coinvolgente, dove i profumi e i sapori sono unici e inconfondibili e ho potuto gustare pietanze che fino ad ora avevo sempre ignorato, scoprendo quanto la cucina libanese e quella siriana possono essere al tempo stesso vicinissime e lontanissime dalla nostra. Un locale splendido, tutto da vivere, anche con belleserate di musica etnica dal vivo.",
+    text: "Sono venuto qua per la prima volta perché mi ci ha portato un collega che lavora per l'import-export con l'oriente. Ho scoperto un ambiente incredibilmente coinvolgente, dove i profumi e i sapori sono unici e inconfondibili e ho potuto gustare pietanze che fino ad ora avevo sempre ignorato, scoprendo quanto la cucina libanese e quella siriana possono essere al tempo stesso vicinissime e lontanissime dalla nostra. Un locale splendido, tutto da vivere, anche con belle serate di musica etnica dal vivo.",
   },
   {
     name: "Alessandro Verdi",
-    testimonial:
-      "Veniamo qua spessissimo, perché è un posto che ci ha sempre coinvolto tanto.Bella gente, ottima cucina e tanta buona musica con ospiti molto interessanti sia tradizionali del Medio Oriente, live acustici e innovatori. Si trova sempre un posto, anche quando è pienissimo. Davvero un locale consigliato.",
+    text: "Veniamo qua spessissimo, perché è un posto che ci ha sempre coinvolto tanto. Bella gente, ottima cucina e tanta buona musica con ospiti molto interessanti sia tradizionali del Medio Oriente, live acustici e innovatori. Si trova sempre un posto, anche quando è pienissimo. Davvero un locale consigliato.",
   },
 ];
 
-// Animation for each testimonial card
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-  exit: {
-    opacity: 0,
-    y: -40,
-    transition: { duration: 0.5, ease: "easeIn" },
-  },
-};
-
 export default function TestimonianzePage() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Handler for clicking on a dot to navigate to that testimonial
-  const handleDotClick = (index: number) => {
-    setCurrentIndex(index);
-  };
-
-  const currentTestimonial = testimonials[currentIndex];
+  const { locale } = useI18n();
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-tr from-lightBg via-hoverBg to-lightBg">
-      <section className="max-w-4xl w-full px-4 py-8 md:py-16 mx-auto text-center">
-        <motion.h1
-          className="text-3xl md:text-5xl font-extrabold mb-12 text-darkText"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+    <section className="bg-white" aria-labelledby="testimonials-heading">
+      <div className="mx-auto max-w-contentContainer px-4 py-12 md:py-20 xl:px-0">
+        <h2
+          id="testimonials-heading"
+          className="mb-8 text-center font-heading text-4xl font-semibold text-darkText md:mb-12 md:text-5xl"
         >
-          Testimonianze
-        </motion.h1>
+          {PAGES[locale].home.testimonialsTitle}
+        </h2>
 
-        {/* AnimatePresence for the single testimonial card */}
-        <div className="relative flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex} // important for AnimatePresence to track
-              variants={cardVariants}
-              initial="hidden"
-              animate="show"
-              exit="exit"
-              className="p-6 shadow-[0px_0px_10px_#967d48] rounded-lg w-full max-w-4xl flex flex-col items-center"
+        {/* Swipeable row on phones, three columns from tablet up */}
+        <ul className="-mx-4 flex snap-x scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 scrollbar-hide lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
+          {testimonials.map((item) => (
+            <li
+              key={item.name}
+              className="flex w-[85%] shrink-0 snap-start flex-col rounded-2xl border border-line bg-darkBg p-6 md:w-[60%] lg:w-auto"
             >
-              {/* User Name & Location */}
-              <div>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-darkText">
-                  {currentTestimonial.name}
-                </h2>
-              </div>
-
-              {/* Testimonial Text */}
-              <p className="mt-4 text-xl md:text-2xl">
-                {currentTestimonial.testimonial}
+              <Quote className="h-6 w-6 text-lightText/60" aria-hidden="true" />
+              <blockquote lang="it" dir="ltr" className="mt-3 flex-1 text-base leading-relaxed text-darkText/80">
+                {item.text}
+              </blockquote>
+              <p className="mt-4 font-heading text-xl font-semibold text-darkText" dir="ltr">
+                {item.name}
               </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Dots Navigation */}
-        <div className="flex justify-center gap-2 mt-6">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`w-3 h-3 rounded-full transition-colors
-                ${index === currentIndex ? "bg-lightText" : "bg-hoverBg"}
-              `}
-              aria-label={`Show testimonial ${index + 1}`}
-            />
+            </li>
           ))}
-        </div>
-      </section>
-    </main>
+        </ul>
+      </div>
+    </section>
   );
 }

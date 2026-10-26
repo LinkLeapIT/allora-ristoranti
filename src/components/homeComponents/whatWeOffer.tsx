@@ -3,172 +3,65 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import BackgroundImage2 from "../backgroundImage";
+import { ArrowRight } from "lucide-react";
 
 import allora_bbq from "../../../public/assets/images/allora-bbq.jpg";
-import aalora_appetizers from "../../../public/assets/images/allora-appetizers.jpg";
+import allora_appetizers from "../../../public/assets/images/allora-appetizers.jpg";
 import allora_delivery from "../../../public/assets/images/allora-delivery.jpg";
 import allora_live_music from "../../../public/assets/images/allora-live-music.jpg";
+import { useI18n } from "@/i18n/I18nProvider";
+import { PAGES } from "@/i18n/pages";
 
+const CARDS = [
+  { key: "ristorante", href: "/pages/ristorante", image: allora_bbq },
+  { key: "cuisine", href: "/pages/cuisine", image: allora_appetizers },
+  { key: "delivery", href: "/pages/delivery", image: allora_delivery },
+  { key: "evenings", href: "/pages/evenings", image: allora_live_music },
+] as const;
 
-// ANIMATION VARIANTS
-const containerVariants = {
-  hidden: {}, // No initial animations needed for the container
-  show: {
-    transition: {
-      // Stagger each child card by 0.2s
-      staggerChildren: 0.2,
-    },
-  },
-};
+export default function WhatWeOffer({ showTitle = true }: { showTitle?: boolean }) {
+  const { locale } = useI18n();
+  const c = PAGES[locale];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-export default function WhatWeOffer() {
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Background Image */}
-      <BackgroundImage2 />
+    <section className="bg-darkBg">
+      <div className="mx-auto max-w-contentContainer px-4 py-12 md:py-20 xl:px-0">
+        {showTitle && (
+          <h2 className="mb-8 text-center font-heading text-4xl font-semibold text-darkText md:mb-12 md:text-5xl">
+            {c.home.offerTitle}
+          </h2>
+        )}
 
-      <div className="flex flex-col items-center justify-center w-full lg:h-screen bg-white bg-opacity-50">
-        <h1
-            className="mt-4 text-3xl font-extrabold md:text-5xl text-darkText"
-        >
-            Cosa Offriamo
-        </h1>
-
-        {/* MOTION WRAPPER for scrolling animation */}
-        <motion.div
-          className="grid w-full max-w-contentContainer grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4"
-          // Framer Motion props:
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
-        >
-          {/* CARD 1 */}
-          <motion.div
-            variants={itemVariants}
-            className="relative p-4 bg-white rounded-lg bg-opacity-80"
-          >
-            <Image
-              src={allora_bbq}
-              alt="allora BBQ"
-              width={600}
-              height={600}
-              // If you want to lazy-load (though Next.js does this automatically)
-              // loading="lazy"
-              className="w-full h-auto"
-            />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
-              Ristorante
-            </h2>
-            <p className="p-1 text-xl text-center md:text-2xl">
-              La cucina del Medio Oriente e in particolare quella siriana e
-              libanese sono la base e il punto di partenza per tantissime ...
-            </p>
-            <Link
-              href="/pages/ristorante"
-              className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
-            >
-              Scopri di più
-            </Link>
-          </motion.div>
-
-          {/* CARD 2 */}
-          <motion.div
-            variants={itemVariants}
-            className="relative p-4 bg-white rounded-lg bg-opacity-80"
-          >
-            <Image
-              src={aalora_appetizers}
-              alt="allora appetizers"
-              width={600}
-              height={600}
-              className="w-full h-auto"
-            />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
-              Cucina siriana e libanese
-            </h2>
-            <p className="p-1 text-xl text-center md:text-2xl">
-              Quando si parla genericamente di cucina mediorientale, in realtà ci
-              si riferisce proprio alla tradizione siriana e libanese...
-            </p>
-            <Link
-              href="/pages/cuisine"
-              className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
-            >
-              Scopri di più
-            </Link>
-          </motion.div>
-
-          {/* CARD 3 */}
-          <motion.div
-            variants={itemVariants}
-            className="relative p-4 bg-white rounded-lg bg-opacity-80"
-          >
-            <Image
-              src={allora_delivery}
-              alt="allora delivery"
-              width={600}
-              height={600}
-              className="w-full h-auto"
-            />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
-              Consegne a domicilio
-            </h2>
-            <p className="p-1 text-xl text-center md:text-2xl">
-              Per chi vuol gustare la cucina siriana e libanese comodamente a
-              casa propria, senza doversi preoccupare di prenotare un posto...
-            </p>
-            <Link
-              href="/pages/delivery"
-              className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
-            >
-              Scopri di più
-            </Link>
-          </motion.div>
-
-          {/* CARD 4 */}
-          <motion.div
-            variants={itemVariants}
-            className="relative p-4 bg-white rounded-lg bg-opacity-80"
-          >
-            <Image
-              src={allora_live_music}
-              alt="allora live music"
-              width={600}
-              height={600}
-              className="w-full h-auto"
-            />
-            <h2 className="flex flex-col items-center justify-center min-h-[70px] text-2xl font-extrabold text-center md:text-3xl text-darkText">
-              Serate di musica cibo e libri
-            </h2>
-            <p className="p-1 text-xl text-center md:text-2xl">
-              La tradizione mediorientale vede da sempre il momento del pasto
-              come una gioia e un&#39;occasione per incontrarsi. Ti offriamo
-              serate...
-            </p>
-            <Link
-              href="/pages/evenings"
-              className="absolute p-2 text-lightText hover:text-hoverBg bottom-0 right-0"
-            >
-              Scopri di più
-            </Link>
-          </motion.div>
-        </motion.div>
+        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {CARDS.map(({ key, href, image }) => (
+            <li key={key} className="flex">
+              <Link
+                href={href}
+                className="group flex w-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-colors hover:border-lightText/60"
+              >
+                <Image
+                  src={image}
+                  alt=""
+                  sizes="(min-width: 960px) 25vw, (min-width: 667px) 50vw, 100vw"
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none"
+                />
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="font-heading text-2xl font-semibold leading-tight text-darkText">
+                    {c.offer[key].title}
+                  </h3>
+                  <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-darkText/70 md:text-base">
+                    {c.offer[key].text}
+                  </p>
+                  <span className="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-medium text-lightText">
+                    {c.home.learnMore}
+                    <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </section>
   );
 }
